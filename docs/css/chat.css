@@ -63,7 +63,7 @@ body {
 
 /* Default link color */
 a {
-    color: #32CD32; /* Softer neon green */
+    color: #00d8ff; /* Softer neon green */
     text-decoration: none;
 }
 
@@ -153,7 +153,7 @@ a:active {
 .speed-indicator {
     height: 100%;
     width: 0%; /* Start at 0% width */
-    background: linear-gradient(270deg, #32CD32, #3CB371, #228B22); /* Define the gradient colors */
+    background: linear-gradient(270deg, #00d8ff, #0011ff, #00ffdd); /* Define the gradient colors */
     background-size: 200% 200%; /* Size the gradient for movement */
     animation: gradientAnimation 5s linear infinite; /* Apply the gradient animation */
     position: relative; /* Position relative for pseudo-elements */
@@ -221,7 +221,7 @@ code {
     width: 100%; /* Adjust width as needed */
     z-index: 500;
     background-color: rgba(47, 54, 64, var(--chatContainer-bg-opacity)); /* Fully opaque */
-    border: 1px solid #32CD32; /* Softer neon green border */
+    border: 1px solid #00d8ff; /* Softer neon green border */
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
@@ -364,17 +364,17 @@ code {
 }
 
 .assistant::before {
-    background-color: #124429; /* Same background color for the background */
+    background-color: #002244; /* Same background color for the background */
 }
 
 .user {
     text-align: right;
     /* background-color: #1b663e; Softer neon green background for user */
-    border: 1px solid #2ecc71; /* Soft green border for user */
+    border: 1px solid #00d8ff; /* Soft green border for user */
 }
 
 .user::before {
-    background-color: #1b663e; /* Same background color for the background */
+    background-color: #00366d; /* Same background color for the background */
 }
 
 .system {
@@ -403,10 +403,10 @@ code {
 #input-container input {
     flex: 1;
     padding: 10px;
-    border: 1px solid #32CD32; /* Softer neon green border */
+    border: 1px solid #00d8ff; /* Softer neon green border */
     border-radius: e 0 0 e;
     /* background-color: #2f3640; Dark grey */
-    background-color: #124429; 
+    background-color: #002244; 
     color: #f5f6fa; /* Light grey */
 }
 
@@ -421,12 +421,12 @@ code {
 }
 
 #input-container button {
-    border: 1px solid #2e8b57; /* Softer neon green button */
+    border: 1px solid rgb(46, 139, 116); /* Softer neon green button */
     border-left: none;
     width: 15%;
     min-width: 10%;
     border-radius: 0 5px 5px 0;
-    background-color: #1b663e; /* Softer neon green */
+    background-color: #002244; /* Softer neon green */
     color: #f5f6fa; /* Light grey */
     cursor: pointer;
 }
@@ -435,7 +435,7 @@ code {
     width: 100%;
     max-width: 700px;
     background-color: #2f3640; /* Dark grey */
-    border: 1px solid #32CD32; /* Softer neon green border */
+    border: 1px solid #00d8ff; /* Softer neon green border */
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.5);
@@ -463,7 +463,7 @@ label {
 input[type="text"], input[type="number"], select {
     width: 100%;
     padding: 8px;
-    border: 1px solid #32CD32; /* Softer neon green border */
+    border: 1px solid #00d8ff; /* Softer neon green border */
     border-radius: 5px;
     background-color: #2f3640; /* Dark grey */
     color: #f5f6fa; /* Light grey */
@@ -477,9 +477,9 @@ input[type="text"], input[type="number"], select {
 #save-load-container button {
     width: 48%;
     padding: 10px;
-    border: 1px solid #32CD32; /* Softer neon green border */
+    border: 1px solid #00d8ff; /* Softer neon green border */
     border-radius: 5px;
-    background-color: #32CD32; /* Softer neon green */
+    background-color: #00d8ff; /* Softer neon green */
     color: #f5f6fa; /* Light grey */
     cursor: pointer;
 }
@@ -533,7 +533,7 @@ input:focus, select:focus {
 }
 
 input[type="checkbox"]:checked + label {
-    color: #32CD32; /* Softer neon green */
+    color: #00d8ff; /* Softer neon green */
 }
 
 input[type="checkbox"]:not(:checked) + label {
@@ -690,7 +690,7 @@ input[type="checkbox"]:not(:checked) + label {
 #save-button,
 #download-button,
 #upload-button {
-    background-color: #4CAF50; /* Green background */
+    background-color: #00d8ff; /* Green background */
     color: white; /* White text */
     border: none; /* No border */
     border-radius: 5px; /* Rounded corners */
@@ -705,7 +705,7 @@ input[type="checkbox"]:not(:checked) + label {
 #save-button:hover,
 #download-button:hover,
 #upload-button:hover {
-    background-color: #45a049; /* Darker green */
+    background-color: #ffae00; /* Darker green */
     transform: scale(1.05); /* Slightly increase size */
 }
 
@@ -714,7 +714,7 @@ input[type="checkbox"]:not(:checked) + label {
 #download-button:focus,
 #upload-button:focus {
     outline: none; /* Remove default outline */
-    box-shadow: 0 0 5px #4CAF50; /* Green glow */
+    box-shadow: 0 0 5px rgb(76, 127, 175); /* Green glow */
 }
 
 /* Styles for the saved chats list */
@@ -736,7 +736,7 @@ input[type="checkbox"]:not(:checked) + label {
 
 /* Change background color on hover */
 #saved-chats-list li:hover {
-    background-color: #0ba1007a; /* Slightly darker on hover */
+    background-color: #002244; /* Slightly darker on hover */
 }
 
 /* Delete button styles */
@@ -839,7 +839,7 @@ input[type="checkbox"]:not(:checked) + label {
     display: inline-block;
     padding: 0; /* Remove padding to eliminate space between the arrows */
     font-size: 1.5em; /* Slightly larger arrows */
-    color: #32CD32; /* Softer neon green */
+    color: #00d8ff; /* Softer neon green */
     margin: 0; /* No margin between arrows */
 }
 
@@ -1006,7 +1006,7 @@ button:disabled {
 
 /* Button styling */
 .menu-btn {
-    background-color: #4CAF50; /* Green button */
+    background-color: #00d8ff; /* Green button */
     color: white;
     padding: 15px 32px;
     text-align: center;
@@ -1021,7 +1021,7 @@ button:disabled {
 }
 
 .menu-btn:hover {
-    background-color: #45a049; /* Darker green on hover */
+    background-color: #00a2ff; /* Darker green on hover */
 }
 
 /* Form and opacity slider styling */
