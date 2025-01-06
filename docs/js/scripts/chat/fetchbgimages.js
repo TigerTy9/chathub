@@ -175,7 +175,7 @@ async function setImage(slot) {
     const userId = sessionStorage.getItem('characterUploader');
     const charId = sessionStorage.getItem('selectedCharacterId');
     const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value;
-    const url = `https://botbridge.net/bucket/${userId}/${charId}/slot${slot}.webp`; // Slot-based image URL
+    const url = `https://dev.botbridge.net/bucket/${userId}/${charId}/slot${slot}.webp`; // Slot-based image URL
 
     // Check if the image URL is valid
     const isValid = await isImageValid(url);
