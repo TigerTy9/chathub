@@ -25,7 +25,7 @@ body {
 .profile-header {
     display: flex;
     align-items: center;
-    border-bottom: 2px solid #00b300; /* Modern bottom border */
+    border-bottom: 2px solid #00d8ff; /* Modern bottom border */
     padding-bottom: 20px; /* Space below profile header */
 }
 
@@ -100,7 +100,7 @@ body {
 h2 {
     margin-bottom: 15px;  /* Space below the header */
     font-size: 1.5rem;    /* Adjust size for the header */
-    color: #00b300;       /* Green color to match theme */
+    color: #00d8ff;       /* Green color to match theme */
 }
 
 /* Responsive Layout */
@@ -146,7 +146,7 @@ h2 {
 }
 
 .follow-button {
-    background-color: #00b300; 
+    background-color: #00d8ff; 
     color: white; 
     border: none; 
     border-radius: 4px; 
@@ -155,7 +155,7 @@ h2 {
 }
 
 .follow-button:hover {
-    background-color: #009900; 
+    background-color: #00d8ff; 
 }
 
 
