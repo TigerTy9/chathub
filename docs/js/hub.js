@@ -33,9 +33,10 @@ function filterCharacters() {
     characterCards.forEach(card => {
         const name = card.querySelector('h3').textContent.toLowerCase();
         const tags = card.querySelector('.tags').textContent.toLowerCase();
+        const creator = card.querySelector('.creator').textContent.toLowerCase();
 
         // Ensure that both name and tags are checked correctly
-        const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery);
+        const matchesSearch = name.includes(searchQuery) || tags.includes(searchQuery) || creator.includes(searchQuery);
         const matchesFilters = filterTerms.length === 0 || filterTerms.some(term => tags.includes(term));
 
         card.style.display = 'block';
@@ -92,9 +93,6 @@ function displayCharacters(characters, searchQuery) {
     let nextAdInterval = getRandomAdInterval(); // Get the initial ad interval
 
     characters.forEach(character => {
-        // Check if the character name or description matches the search query
-        const matchesSearch = character.name.toLowerCase().includes(searchQuery) || character.chardescription.toLowerCase().includes(searchQuery);
-        if (matchesSearch) {
             const card = document.createElement('div');
             card.className = 'character-card';
             const imageUrl = `${backendurl}/api/characters/${character.uploader}/images/${character.id}`;
@@ -113,7 +111,12 @@ function displayCharacters(characters, searchQuery) {
                         ${character.tags.map(tag => `<span class="tag">${tag}</span>`).join(' ')}
                     </span>
                 </p>
-                <p class="creator"><b>Created by:</b> ${character.uploader || "Not found"}</p>
+                <p class="creator">
+                    <b>Created by:</b> 
+                    <a href="profile.html?username=${encodeURIComponent(character.uploader || 'Not found')}">
+                        ${character.uploader || "Not found"}
+                    </a>
+                </p>
                 <button class="chat-btn" onclick="openCharacterPage('${character.id}', '${character.uploader}')">Chat</button>
                 <div class="button-container">
                     <button class="view-btn" onclick="viewCharacter('${character.id}', '${character.uploader}')">View Character</button>
@@ -203,7 +206,10 @@ function displayCharacters(characters, searchQuery) {
         
             //         // Create a div for JuicyAds to render the ad into (ID should be dynamically generated)
             //         const adDiv = document.createElement('ins');
-                
+                 
+            //         // Append the div to the ad container
+            //         adContainer.appendChild(adDiv);
+        
             //         // Append the ad container to the character grid
             //         characterGrid.appendChild(adContainer);
         
@@ -218,12 +224,12 @@ function displayCharacters(characters, searchQuery) {
             //     }
             // }
         }
-    });
+    );
 }
 // // Function to reload the ad script (only once per load)
 // function reloadAdScript() {
 //     // Remove the existing script if it's already there
-//     const existingScript = document.querySelector("script[src*='jads.js']");
+//     const existingScript = document.querySelector("script[src*='']");
 //     if (existingScript) {
 //         existingScript.remove();
 //     }
@@ -233,23 +239,18 @@ function displayCharacters(characters, searchQuery) {
 //     adScript.type = 'text/javascript';
 //     adScript.async = true;
 //     adScript.setAttribute('data-cfasync', 'false');
-//     adScript.src = "https://poweredby.jads.co/js/jads.js";
+//     adScript.src = "";
 
 //     // Add the ad script to the document body
 //     document.body.appendChild(adScript);
 
 //     // Add callback when the script is loaded
 //     adScript.onload = function () {
-//         if (window.adsbyjuicy) {
-//             (adsbyjuicy = window.adsbyjuicy || []).push({'adzone': 1073761});
-//             console.log("Ad script reloaded and ad served successfully");
-//         } else {
-//             console.error("JuicyAds object is not available");
-//         }
+    
 //     };
 
 //     adScript.onerror = function () {
-//         console.error("Failed to load JuicyAds script");
+//         console.error("Failed to load Ads script");
 //     };
 // }
 
