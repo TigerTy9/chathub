@@ -341,19 +341,7 @@ function getAllMessagesExceptLast() {
             settings.repeat_penalty = 1.09;
             // Add any additional settings updates here
             break;
-    
-        case 'AetherFume':
-            // Shortwave config
-            settings.temperature = 1.10;
-            settings.top_p = 0.64;
-            settings.top_k = 33;
-            settings.min_p = 0.0;
-            settings.prescence_penalty = 0.15;
-            settings.frequency_penalty = 0.05;
-            settings.repeat_penalty = 1.07;
-            // Add any additional settings updates here
-            break;
-
+                
         case 'Nebula Drift':
             // Shortwave config
             settings.temperature = 1.15;          // Slightly higher temperature for more creativity
@@ -983,7 +971,7 @@ console.log("RequestData: ", requestData);
 
         // Customize API request based on selected model
         if (selectedModel === "NethralIQ") {
-            apiUrl = "https://api.botbridge.net/api/send"; // Example for Gastonova model (adjust URL as needed)
+            apiUrl = "https://api.botbridge.net/api/send"; // Example for NethralIQ model (adjust URL as needed)
         } else if (selectedModel === "NemoMix") {
             apiUrl = "https://13b-apibridge1.botbridgeai.net/v1/chat/completions"; // Example for Aetherius model (adjust URL as needed)
         }
