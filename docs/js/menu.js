@@ -99,3 +99,38 @@ document.getElementById('login-status').addEventListener('click', function () {
 
 });
 
+// Ensure the code runs after the DOM is fully loaded
+window.addEventListener('DOMContentLoaded', (event) => {
+    // Get the userID from the cookie
+    const userID = getCookie('userID');  // Replace 'userID' with the actual cookie name
+
+    if (userID) {
+        // Placeholder for username fetching logic (replace this with actual logic)
+        const username = userID;  // Replace with actual logic to get the username
+
+        // Find the profile link and update it with the username
+        const profileLink = document.getElementById('profileLink');
+        const profileLink2 = document.getElementById('profileLink2');
+
+        if (profileLink) {
+            profileLink.href = `profile.html?username=${username}`;
+        } else {
+            console.error("Profile link not found!");
+        }
+        if (profileLink2) {
+            profileLink2.href = `profile.html?username=${username}`;
+        } else {
+            console.error("Profile link 2 not found!");
+        }
+    } else {
+        console.error("userID cookie not found!");
+    }
+});
+
+// Function to get cookie value by name
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+}
