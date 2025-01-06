@@ -276,8 +276,8 @@
     <div class="container">
         <h1>Create a New Character</h1>        
         <div class="mode-switch">
-            <button id="toggleMode">Switch to Context Mode</button>
-            <small>Context mode, is not functional at this point, only scenario mode!</small>
+            <button id="toggleMode">Switch to Scenario Mode</button>
+            <small>Scenario mode, is not functional at this point, only Context Mode!</small>
             <p id="modeExplanation">Only one of the two is required: general context or a guided scenario.</p>
             
             <div id="description">
@@ -720,7 +720,7 @@ function loadFormData() {
             } else {
                 scenarioContainer.style.display = 'none';
                 contextContainer.style.display = 'block';
-                toggleButton.textContent = 'Switch to Scenario Mode';
+                toggleButton.textContent = 'Switch to Scenario Mode (Unavalible)';
                 generalContext.style.display = 'block';
                 guidedScenario.style.display = 'none';
             }
