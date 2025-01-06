@@ -215,7 +215,6 @@ main {
     border-radius: 5px; /* Rounded corners */
     padding: 3px 6px; /* Reduced padding for smaller tags */
     margin: 2px; /* Margin between tags */
-    color: white;
     font-size: 12px; /* Smaller font size */
     display: inline-block; /* Inline block for proper layout */
 }
@@ -223,7 +222,7 @@ main {
 .full-tags-overlay {
     display: none;           /* Hidden by default */
     position: absolute;      /* Absolute positioning for overlay */
-    background-color: #ffffff; /* Dark background for visibility */
+    background-color: #494949; /* Dark background for visibility */
     color: #ffffff;            /* Text color */
     padding: 10px;           /* Padding for overlay */
     border-radius: 5px;      /* Rounded corners */
