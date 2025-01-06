@@ -157,6 +157,23 @@
     border-radius: 5px;
     text-align: center;
 }
+#notice {
+    text-align: center;
+    background-color: #f9f9f9;
+    color: #333;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1.1em;
+    max-width: 600px;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+}
+
+#notice strong {
+    font-weight: bold;
+    color: #d9534f; /* Red color for the "Notice" */
+}
 
     </style>
     <!-- Import DOMPurify -->
@@ -165,8 +182,8 @@
 </head>
 <body>
 
-     <!-- Header -->
-     <header>
+    <!-- Header -->
+    <header>
         <nav class="navbar">
             <div class="left-content">
                 <a href="/" class="logo"> <!-- Make the logo clickable -->
@@ -174,7 +191,7 @@
                     <img src="logo.png" alt=" ">
                 </div>
             </a>
-                        <a href="/" class="text">
+            <a href="/" class="text">
                 <div class="text">
                     <span class="letter letter-1">B</span>
                     <span class="letter letter-2">O</span>
@@ -202,7 +219,7 @@
                     <a href="mycharacters.html">My Characters</a>
                 </div>
             </li>
-    
+
             <!-- Community with dropdown -->
             <li class="dropdown">
                 <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
@@ -211,17 +228,19 @@
                     <a href="join-our-team.html">Get Involved in the Community</a>
                 </div>
             </li>
-    
+
             <!-- Account with dropdown -->
             <li class="dropdown">
-                <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
+                <a href="profile.html" id="profileLink" class="dropbtn" onclick="toggleDropdown(event)" id="accountLink">Account</a>
                 <div class="dropdown-content">
-                    <a href="myaccount.html">Account</a>
+                    <a href="profile.html" id="profileLink2">Profile</a>
                     <a href="mylikes.html">My Likes</a>
+                    <a href="myaccount.html">Account Settings</a>
                     <a href="login.html">Login</a>
+                    <a href="subscriptions.html" class="nav-btn">Subscriptions</a>
                 </div>
             </li>
-    
+
             <!-- Help with dropdown -->
             <li class="dropdown">
                 <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
@@ -231,15 +250,17 @@
                     <a href="contact.html">Contact</a>
                 </div>
             </li>
-    
+
             <!-- Contribute Button -->
             <li>
                 <a href="contribute.html" class="nav-btn">Contribute</a>
             </li>
         </ul>     
-    
+
+        <!-- Search bar -->
+        <!-- <input type="text" id="search-bar" placeholder="Search characters..." class="search-bar"> -->
         <div id="login-status" class="login-status"></div>
-    
+
         <!-- Hamburger menu for mobile view -->
         <div class="hamburger" onclick="toggleMenu()">
             <span class="bar"></span>
@@ -247,9 +268,10 @@
             <span class="bar"></span>
         </div>  
     </div>
-    </nav>
-
+</nav>
+   
     </header>
+
     <!-- Main Content -->
     <div class="container">
         <h1>Create a New Character</h1>        
@@ -307,6 +329,7 @@
             <div class="input-container">
                 <textarea id="chardescription" rows="4" placeholder="Enter a brief character description" required maxlength="512"></textarea>
                 <span id="chardescriptionCharCount" class="char-count">0 / 512</span>
+                <small><i>*Only so users know what the bot is. Not used by AI.*</i></small>
             </div>
             
             <label for="tags">Tags (comma-separated):</label>
@@ -368,6 +391,201 @@
                 <button id="modalNo">No</button>
             </div>
         </div>
+        
+        <h1>Character Background Images (BETA)</h1>
+        <p id="notice"><strong>Notice:</strong> Slots 1, 2, and 3 are designated for safer content, while the other slots can feature more mature themes (partial), but not full NSFW material. Full frontal nudity is not allowed, but nudity from behind (such as the backside) is acceptable, as long as it remains within light NSFW content. No real people images are permitted.</p>    
+        <div class="button-container">
+            <button class="open-btn" onclick="openNewTab()">Learn More About Allowed Content</button>
+        </div>   
+        <script>
+            function openNewTab() {
+                // Opens the content guidelines page in a new tab
+                window.open('characterbackground-guidelines.html', '_blank');
+            }
+        </script>
+            <div id="image-slots">
+            <!-- Slots will be dynamically populated here -->
+        </div>
+        
+        <script>
+            let user = '';
+            let characterNumber = '';
+        
+            // Retrieve user and character number from session storage
+            const characterData = sessionStorage.getItem('editCharacter');
+            
+            if (characterData) {
+                const parsedData = JSON.parse(characterData);
+                user = parsedData.uploader;
+                characterNumber = parsedData.id;
+                console.log('Uploader:', user);
+                console.log('Character ID:', characterNumber);
+            } else {
+                console.log('No character data found in session storage');
+            }
+        
+            // Function to initialize the slots for image upload
+            function initializeImageSlots() {
+                const slotsContainer = document.getElementById('image-slots');
+        
+                // Create 10 empty image slots (1-10)
+                for (let i = 1; i <= 10; i++) {
+                    const imgSlot = document.createElement('div');
+                    imgSlot.classList.add('slot');
+                    
+                    // Create slot HTML (empty at first)
+                    imgSlot.innerHTML = `
+                        <h3>Slot ${i}</h3>
+                        <img src="" alt="No image uploaded" width="100" id="img-slot-${i}">
+                        <input type="file" onchange="uploadImage(event, ${i})" id="upload-slot-${i}">
+                        <button onclick="deleteImage(${i})" id="delete-slot-${i}" style="display:none;">Delete</button>
+                    `;
+                    slotsContainer.appendChild(imgSlot);
+        
+                    // Check if there is an existing image for the slot
+                    fetchExistingImage(i);
+                }
+            }
+        
+            // Function to fetch the existing image for each slot
+            function fetchExistingImage(slot) {
+                fetch(`/bucket/${user}/${characterNumber}/slot${slot}.webp`) // Adjust the path based on slot number
+                    .then(response => {
+                        if (response.ok) {
+                            return response.blob(); // If image exists, get the image as a blob
+                        } else {
+                            throw new Error('Image not found');
+                        }
+                    })
+                    .then(blob => {
+                        const imgUrl = URL.createObjectURL(blob); // Convert blob to a URL
+                        const imgSlot = document.getElementById(`img-slot-${slot}`);
+                        imgSlot.src = imgUrl; // Set the image source to the retrieved image
+                        document.getElementById(`delete-slot-${slot}`).style.display = 'inline'; // Show delete button
+                    })
+                    .catch(err => {
+                        console.log(`No image found for Slot ${slot}:`, err); // If image not found, do nothing
+                    });
+            }
+        
+            // Initialize the image slots on page load
+            initializeImageSlots();
+        
+            // Handle image upload for each slot
+            function uploadImage(event, slot) {
+                const file = event.target.files[0];
+                
+                // Check for file size (max 4MB)
+                if (file.size > 4 * 1024 * 1024) {
+                    alert('File size exceeds 4MB. Please upload a smaller image.');
+                    return;
+                }
+        
+                // Check for valid image format (only allow images)
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Invalid file format. Only JPEG, PNG, and GIF images are allowed.');
+                    return;
+                }
+        
+                if (!file) return; // No file selected, exit
+        
+                // Preview the image in the same spot as the retrieved image
+                const imgSlot = document.getElementById(`img-slot-${slot}`);
+        
+                // Convert image to WebP using canvas (for better compression)
+                const img = new Image();
+                img.src = URL.createObjectURL(file);
+                
+                img.onload = function() {
+    // Create a canvas element
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set canvas size to the image size
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    // Draw the image on the canvas
+    ctx.drawImage(img, 0, 0);
+
+// Get the original file size (assuming 'file' is the file input)
+const imageSize = file.size; // This is the uploaded file size in bytes
+
+// Set the maximum image size for compression scaling (192KB for example)
+const maxSize = 192 * 1024;  // 192KB in bytes
+const minQuality = 0.05;  // Minimum quality (for very large images)
+const maxQuality = 0.8;  // Maximum quality for large images
+
+// Calculate the compression quality dynamically based on image size
+let quality = maxQuality; // Default to max quality
+
+if (imageSize > maxSize) {
+    // For large images, apply stronger compression. Use a faster curve for compression.
+    const compressionFactor = Math.pow((maxSize / imageSize), 0.75); // Faster compression using a lower exponent
+    quality = Math.max(minQuality, maxQuality * compressionFactor);  // Ensure quality doesn't go below minQuality
+
+    console.log(`Image size: ${imageSize} bytes. Compression factor: ${compressionFactor.toFixed(2)}, Quality: ${quality.toFixed(2)}`);
+} else {
+    // For smaller images, gradually increase quality as the image size decreases
+    const increaseFactor = 1 - (imageSize / maxSize); // Increase factor based on how small the image is
+    quality = maxQuality + (increaseFactor * (1 - maxQuality)); // Gradually increase past maxQuality as the image gets smaller
+
+    console.log(`Image size: ${imageSize} bytes. Increase factor: ${increaseFactor.toFixed(2)}, Quality: ${quality.toFixed(2)}`);
+}
+
+// Now you can use the `quality` in your image compression logic
+
+
+    // Convert canvas to WebP format with the calculated quality
+    canvas.toBlob(function(blob) {
+        const formData = new FormData();
+        formData.append('image', blob, 'image.webp'); // Append the blob as 'image.webp'
+
+        // Send the compressed WebP image to the server
+        fetch(`/bucket/${user}/${characterNumber}/slot${slot}/upload`, {  // Adjust the URL for upload path
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Image uploaded successfully!');
+            updateSlotImage(slot, data.file.Key);  // Update image slot with the new image
+        })
+        .catch(err => alert('Failed to upload image'));
+    }, 'image/webp', quality);  // Use the dynamically calculated compression quality
+};
+
+
+            }
+        
+            // Update the image in the corresponding slot
+            function updateSlotImage(slot, imageKey) {
+                const imgSlot = document.getElementById(`img-slot-${slot}`);
+                const imgUrl = `/bucket/${imageKey}`;  // Ensure this matches the backend path
+                imgSlot.src = imgUrl; // Set the image source to the new image URL
+                document.getElementById(`delete-slot-${slot}`).style.display = 'inline';  // Show delete button
+            }
+        
+            // Handle image delete for each slot
+            function deleteImage(slot) {
+                const imgSlot = document.getElementById(`img-slot-${slot}`);
+                const imageKey = imgSlot.src.split('/').pop();  // Extract file name
+        
+                // Send delete request to backend
+                fetch(`/bucket/${user}/${characterNumber}/slot${slot}/delete`, { // Adjust URL for delete request
+                    method: 'DELETE',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Image deleted successfully!');
+                    imgSlot.src = ''; // Clear the image in the slot
+                    document.getElementById(`delete-slot-${slot}`).style.display = 'none'; // Hide delete button
+                })
+                .catch(err => alert('Failed to delete image'));
+            }
+        </script>
+        
         
     </div>
 
