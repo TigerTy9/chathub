@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Management - BOTBRIDGE.AI Character Hub</title>
+    <title>Account Management - BotBridge.AI Character Hub</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/menu2.0.css">
     <style>
@@ -81,8 +81,8 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
+       <!-- Header -->
+       <header>
         <nav class="navbar">
             <div class="left-content">
                 <a href="/" class="logo"> <!-- Make the logo clickable -->
@@ -90,7 +90,7 @@
                     <img src="logo.png" alt=" ">
                 </div>
             </a>
-                        <a href="/" class="text">
+            <a href="/" class="text">
                 <div class="text">
                     <span class="letter letter-1">B</span>
                     <span class="letter letter-2">O</span>
@@ -107,66 +107,66 @@
                 </div>
             </a>
             </div>
-            <div class="right-content">
-                <ul class="nav-links">
-                    <!-- Characters with dropdown -->
-                    <li class="dropdown">
-                        <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
-                        <div class="dropdown-content">
-                            <a href="index.html">Characters Hub</a>
-                            <a href="editor.html">Upload Character</a>
-                            <a href="mycharacters.html">My Characters</a>
-                        </div>
-                    </li>
-        
-                    <!-- Community with dropdown -->
-                    <li class="dropdown">
-                        <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
-                        <div class="dropdown-content">
-                            <a href="rules.html">Rules</a>
-                            <a href="join-our-team.html">Get Involved in the Community</a>
-                                </div>
-                    </li>
-        
-                    <!-- Account with dropdown -->
-                    <li class="dropdown">
-                        <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
-                        <div class="dropdown-content">
-                            <a href="myaccount.html">Account</a>
-                            <a href="mylikes.html">My Likes</a>
-                            <a href="login.html">Login</a>
-                        </div>
-                    </li>
-        
-                    <!-- Help with dropdown -->
-                    <li class="dropdown">
-                        <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
-                        <div class="dropdown-content">
-                            <a href="documentation.html">Documentation</a>
-                            <a href="updates.html">Updates & Features</a>
-                            <a href="contact.html">Contact</a>
-                        </div>
-                    </li>
-        
-                    <!-- Contribute Button -->
-                    <li>
-                        <a href="contribute.html" class="nav-btn">Contribute</a>
-                    </li>
-                </ul>     
-        
-                <!-- Search bar -->
-                <input type="text" id="search-bar" placeholder="Search characters..." class="search-bar">
-                <div id="login-status" class="login-status"></div>
-        
-                <!-- Hamburger menu for mobile view -->
-                <div class="hamburger" onclick="toggleMenu()">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </div>  
-            </div>
-        </nav>
-    <h1>Account Management</h1>
+    <div class="right-content">
+        <ul class="nav-links">
+            <!-- Characters with dropdown -->
+            <li class="dropdown">
+                <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
+                <div class="dropdown-content">
+                    <a href="index.html">Characters Hub</a>
+                    <a href="editor.html">Upload Character</a>
+                    <a href="mycharacters.html">My Characters</a>
+                </div>
+            </li>
+
+            <!-- Community with dropdown -->
+            <li class="dropdown">
+                <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
+                <div class="dropdown-content">
+                    <a href="rules.html">Rules</a>
+                    <a href="join-our-team.html">Get Involved in the Community</a>
+                </div>
+            </li>
+
+            <!-- Account with dropdown -->
+            <li class="dropdown">
+                <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
+                <div class="dropdown-content">
+                    <a href="myaccount.html">Account</a>
+                    <a href="mylikes.html">My Likes</a>
+                    <a href="login.html">Login</a>
+                </div>
+            </li>
+
+            <!-- Help with dropdown -->
+            <li class="dropdown">
+                <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
+                <div class="dropdown-content">
+                    <a href="documentation.html">Documentation</a>
+                    <a href="updates.html">Updates & Features</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </li>
+
+            <!-- Contribute Button -->
+            <li>
+                <a href="contribute.html" class="nav-btn">Contribute</a>
+            </li>
+        </ul>     
+
+        <!-- Search bar -->
+        <!-- <input type="text" id="search-bar" placeholder="Search characters..." class="search-bar"> -->
+        <div id="login-status" class="login-status"></div>
+
+        <!-- Hamburger menu for mobile view -->
+        <div class="hamburger" onclick="toggleMenu()">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>  
+    </div>
+</nav>
+   
     </header>
 
     <!-- Main Content -->
@@ -180,14 +180,110 @@
         <div class="container">
             <h2>Email Support</h2>
             <p>If you need assistance with your account, please reach out to our support team:</p>
-            <p>Email: <a href="mailto:support@botbridge.net">support@botbridge.net</a></p>
+            <p>Email: <a href="mailto:support@efroai.net">support@efroai.net</a></p>
             <p>More account management features are coming soon!</p>
         </div>
+
+        <div class="account-settings">
+            <h2>Account Settings - Manage Banned Tags</h2>
+            
+            <!-- List of currently banned tags -->
+            <div>
+              <h3>Currently Banned Tags:</h3>
+              <ul id="banned-tags-list">
+                <!-- Dynamically populated list of banned tags -->
+              </ul>
+            </div>
+            
+            <!-- Form to add a new banned tag -->
+            <div>
+              <h3>Ban a New Tag:</h3>
+              <input type="text" id="new-tag" placeholder="Enter tag to ban" />
+              <button id="ban-tag-button">Ban Tag</button>
+            </div>
+            <p>Does not work!</p>
+            <p id="message"></p>
+        </div>
+
+           <!-- Profile Image Upload Section -->
+    <h3>Upload Profile Image</h3>
+    <form id="image-upload-form" enctype="multipart/form-data">
+        <input type="file" id="profile-image" name="profile-image" accept="image/*" />
+        <button type="submit" id="upload-image-button">Upload Image</button>
+    </form>
+    <div id="profile-image-container">
+        <!-- Uploaded image preview will appear here -->
+    </div>
+    <script src="js/scripts/profileImageSettings.js"></script>
+
+          <a href="https://efroai.net/some-useful-tools.html" class="nav-btn">Useful Tools / Troubleshooting</a>
+          <script>
+          // Example list of banned tags (this could be loaded dynamically from the server)
+            let bannedTags = []; 
+
+            // Update the list of banned tags on the page
+            function updateBannedTags() {
+                const bannedTagsList = document.getElementById("banned-tags-list");
+                bannedTagsList.innerHTML = ''; // Clear current list
+
+                bannedTags.forEach(tag => {
+                    const listItem = document.createElement("li");
+                    listItem.textContent = tag;
+
+                    // Create a remove button for each tag
+                    const removeButton = document.createElement("button");
+                    removeButton.textContent = "Remove";
+                    removeButton.classList.add("remove-tag-button");
+                    
+                    // Add event listener for removing the tag
+                    removeButton.addEventListener("click", () => {
+                        removeTag(tag);
+                    });
+
+                    // Append the remove button to the list item
+                    listItem.appendChild(removeButton);
+                    bannedTagsList.appendChild(listItem);
+                });
+            }
+
+            // Function to remove a tag from the banned list
+            function removeTag(tagToRemove) {
+                const index = bannedTags.indexOf(tagToRemove);
+                if (index > -1) {
+                    bannedTags.splice(index, 1); // Remove the tag from the array
+                    updateBannedTags(); // Re-render the banned tags list
+                    document.getElementById("message").textContent = `Successfully removed the tag: ${tagToRemove}`;
+                }
+            }
+
+            // Add a new tag to the banned list
+            function banTag() {
+                const newTag = document.getElementById("new-tag").value.trim();
+
+                if (newTag && !bannedTags.includes(newTag)) {
+                    bannedTags.push(newTag); // Add to the banned tags array
+                    updateBannedTags(); // Re-render the banned tags list
+                    document.getElementById("message").textContent = `Successfully banned the tag: ${newTag}`;
+                    document.getElementById("new-tag").value = ''; // Clear input field
+                } else if (bannedTags.includes(newTag)) {
+                    document.getElementById("message").textContent = `Tag "${newTag}" is already banned.`;
+                } else {
+                    document.getElementById("message").textContent = "Please enter a valid tag.";
+                }
+            }
+
+            // Event listener for the "Ban Tag" button
+            document.getElementById("ban-tag-button").addEventListener("click", banTag);
+
+            // Initialize the page with the current banned tags
+            updateBannedTags();
+
+          </script>
     </main>
 
     <!-- Footer -->
     <footer>
-        <p>© 2024 BotBridgeAI Character Hub. All rights reserved.</p>
+        <p>© 2024 Fetish AI Character Hub. All rights reserved.</p>
     </footer>
 </body>
 <script src="js/menu.js"></script>
@@ -220,7 +316,7 @@ if (userID) {
 </script>
 
 <script>
-    const socket = new WebSocket('wss://botbridge.net'); // Update with your domain
+    const socket = new WebSocket('wss://efroai.net'); // Update with your domain
 
     // Connection opened
     socket.addEventListener('open', (event) => {
