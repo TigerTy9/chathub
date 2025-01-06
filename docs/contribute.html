@@ -91,86 +91,97 @@
 </head>
 <body>
 
-<!-- Header -->
-<header>
-    <nav class="navbar">
-        <div class="left-content">
-            <a href="/" class="logo"> <!-- Make the logo clickable -->
-            <div class="logo">
-                <img src="logo.png" alt=" ">
-            </div>
-        </a>
-        <a href="/" class="text">
-            <div class="text">
-                <span class="letter letter-1">E</span>
-                <span class="letter letter-2">F</span>
-                <span class="letter letter-3">R</span>
-                <span class="letter letter-4">O</span>
-                <span class="letter letter-5">.</span>
-                <span class="letter letter-6">A</span>
-                <span class="letter letter-7">I</span>
-            </div>
-        </a>
+    <!-- Header -->
+    <header>
+        <div id="maintenance-warning" class="maintenance-warning">
+            <p id="maintenance-message"></p>
+            <button class="close-btn">×</button>
         </div>
-<div class="right-content">
-    <ul class="nav-links">
-        <!-- Characters with dropdown -->
-        <li class="dropdown">
-            <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
-            <div class="dropdown-content">
-                <a href="index.html">Characters Hub</a>
-                <a href="editor.html">Upload Character</a>
-                <a href="mycharacters.html">My Characters</a>
+        <nav class="navbar">
+            <div class="left-content">
+                <a href="/" class="logo"> <!-- Make the logo clickable -->
+                <div class="logo">
+                    <img src="logo.png" alt=" ">
+                </div>
+            </a>
+            <a href="/" class="text">
+                <div class="text">
+                    <span class="letter letter-1">B</span>
+                    <span class="letter letter-2">O</span>
+                    <span class="letter letter-3">T</span>
+                    <span class="letter letter-4">B</span>
+                    <span class="letter letter-5">R</span>
+                    <span class="letter letter-6">I</span>
+                    <span class="letter letter-7">D</span>
+                    <span class="letter letter-8">G</span>
+                    <span class="letter letter-9">E</span>
+                    <span class="letter letter-10">.</span>
+                    <span class="letter letter-11">A</span>
+                    <span class="letter letter-12">I</span>
+                </div>
+            </a>
             </div>
-        </li>
+    <div class="right-content">
+        <ul class="nav-links">
+            <!-- Characters with dropdown -->
+            <li class="dropdown">
+                <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
+                <div class="dropdown-content">
+                    <a href="index.html">Characters Hub</a>
+                    <a href="editor.html">Upload Character</a>
+                    <a href="mycharacters.html">My Characters</a>
+                </div>
+            </li>
 
-        <!-- Community with dropdown -->
-        <li class="dropdown">
-            <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
-            <div class="dropdown-content">
-                <a href="rules.html">Rules</a>
-                <a href="join-our-team.html">Get Involved in the Community</a>
-            </div>
-        </li>
+            <!-- Community with dropdown -->
+            <li class="dropdown">
+                <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
+                <div class="dropdown-content">
+                    <a href="rules.html">Rules</a>
+                    <a href="join-our-team.html">Get Involved in the Community</a>
+                </div>
+            </li>
 
-        <!-- Account with dropdown -->
-        <li class="dropdown">
-            <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
-            <div class="dropdown-content">
-                <a href="myaccount.html">Account</a>
-                <a href="mylikes.html">My Likes</a>
-                <a href="login.html">Login</a>
-            </div>
-        </li>
+            <!-- Account with dropdown -->
+            <li class="dropdown">
+                <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
+                <div class="dropdown-content">
+                    <a href="myaccount.html">Account</a>
+                    <a href="mylikes.html">My Likes</a>
+                    <a href="login.html">Login</a>
+                </div>
+            </li>
 
-        <!-- Help with dropdown -->
-        <li class="dropdown">
-            <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
-            <div class="dropdown-content">
-                <a href="documentation.html">Documentation</a>
-                <a href="updates.html">Updates & Features</a>
-                <a href="contact.html">Contact</a>
-            </div>
-        </li>
+            <!-- Help with dropdown -->
+            <li class="dropdown">
+                <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
+                <div class="dropdown-content">
+                    <a href="documentation.html">Documentation</a>
+                    <a href="updates.html">Updates & Features</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </li>
 
-        <!-- Contribute Button -->
-        <li>
-            <a href="contribute.html" class="nav-btn">Contribute</a>
-        </li>
-    </ul>     
+            <!-- Contribute Button -->
+            <li>
+                <a href="contribute.html" class="nav-btn">Contribute</a>
+            </li>
+        </ul>     
 
-    <div id="login-status" class="login-status"></div>
+        <!-- Search bar -->
+        <!-- <input type="text" id="search-bar" placeholder="Search characters..." class="search-bar"> -->
+        <div id="login-status" class="login-status"></div>
 
-    <!-- Hamburger menu for mobile view -->
-    <div class="hamburger" onclick="toggleMenu()">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-    </div>  
-</div>
+        <!-- Hamburger menu for mobile view -->
+        <div class="hamburger" onclick="toggleMenu()">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>  
+    </div>
 </nav>
-</header>
-
+   
+    </header>
 <!-- Hero Section -->
 <section class="hero">
     <h1>Support BotBridgeAI</h1>
