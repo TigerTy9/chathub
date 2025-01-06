@@ -399,13 +399,13 @@ footer ul {
 }
 
 a {
-    color: #00d8ff; /* Bright Blue */
+    color: #728ca1; /* Bright Blue */
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 a:hover {
-    color: #728ca1; /* Hover Green */
+    color: #00d8ff; /* Hover Green */
 }
 
 /* Import Google Fonts */
