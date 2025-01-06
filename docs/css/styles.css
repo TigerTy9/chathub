@@ -253,7 +253,7 @@ main {
 }
 
 .creator a {
-    color: #c9c9c9;            /* Softer color for creator */
+    color: #00d8ff;            /* Softer color for creator */
     margin-top: auto;       /* Push creator to the bottom */
     font-size: 0.9em;       /* Smaller font size */
 }
