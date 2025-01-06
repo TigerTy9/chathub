@@ -31,11 +31,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    const SettingsMaxTokensSlider = document.getElementById('SettingsMaxTokensSlider');
-    const SettingsMaxTokensValue = document.getElementById('SettingsMaxTokensValue');
-
-    SettingsMaxTokensSlider.addEventListener('input', () => {
-    SettingsMaxTokensValue.textContent = SettingsMaxTokensSlider.value + " Tokens";
+    const SettingsMaxSentencesSlider = document.getElementById('SettingsMaxSentencesSlider');
+    const SettingsMaxSentencesValue = document.getElementById('SettingsMaxSentencesValue');
+    SettingsMaxSentencesSlider.value = 20;
+    SettingsMaxSentencesSlider.addEventListener('input', () => {
+    SettingsMaxSentencesValue.textContent = SettingsMaxTokensSlider.value + " Tokens";
+    
         // Here you can add code to handle the setting change
         
         // For example, updating a global setting or sending it to a server
@@ -130,7 +131,7 @@ function loadCharacter(charName, listItem) {
     }
 }
 
-//Shortwave Config
+//Settings Config
 let settings = {
     charname: '',
     persona: '',
@@ -147,7 +148,9 @@ let settings = {
     top_k: 33, //Limit the next token selection to the K most probable tokens.
     prescence_penalty: 0.00, //Slightly encourge new topics
     frequency_penalty: 0.00, //penalty for repetition aka avoid repeating words
-    repeat_penalty: 1.07,
+    repeat_penalty: 1.09,
+    repeat_last_n: 512,
+    tokenLimit: 8000,
     systemPrompt: "Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}.",
     context: "",
     enablePreload: false, // Default to false if not provided
@@ -229,9 +232,10 @@ function updateSettings() {
     settings.prescence_penalty = parseFloat(document.getElementById('prescence_penalty').value);
     settings.frequency_penalty = parseFloat(document.getElementById('frequency_penalty').value);
     settings.repeat_penalty = parseFloat(document.getElementById('repeat_penalty').value);
+    settings.repeat_last_n = parseFloat(document.getElementById('repeat_last_n').value);
 
     settings.model = document.getElementById('model').value;
-    settings.maxTokens = document.getElementById('SettingsMaxTokensSlider').value;
+    //settings.maxTokens = document.getElementById('SettingsMaxTokensSlider').value;
 
     //Controlled Message Data Importance
     messagedataimportance.lusermsg = lastUserMessage;
@@ -313,7 +317,19 @@ function getAllMessagesExceptLast() {
 
    // Function to update settings based on selected option
     function updateSettingParameters(option) {
-        switch (option) {       
+        switch (option) {    
+        case 'Ethereal Winds 2.0':
+            // Shortwave config
+            settings.temperature = 1.10;
+            settings.top_p = 0.64;
+            settings.top_k = 33;
+            settings.min_p = 0.0;
+            settings.prescence_penalty = 0.00;
+            settings.frequency_penalty = 0.00;
+            settings.repeat_penalty = 1.12;
+            // Add any additional settings updates here
+            break;  
+
         case 'Ethereal Winds':
             // Shortwave config
             settings.temperature = 1.10;
@@ -585,6 +601,7 @@ function getAllMessagesExceptLast() {
         document.getElementById('top_k').value = settings.top_k;
         document.getElementById('min_p').value = settings.min_p;
         document.getElementById('repeat_penalty').value = settings.repeat_penalty;
+
         document.getElementById('prescence_penalty').value = settings.prescence_penalty;
         document.getElementById('frequency_penalty').value = settings.frequency_penalty;
 
@@ -618,6 +635,9 @@ updateNegativePrompt();
 // Add event listener for change events on the select element
 document.getElementById('systemPrompt').addEventListener('change', updateSystemPrompt);
 document.getElementById('negativePrompt').addEventListener('change', updateNegativePrompt);
+//document.getElementById('SettingsMaxTokensSlider').addEventListener('change', updateNegativePrompt);
+document.getElementById('SettingsMaxSentencesSlider').addEventListener('change', updateNegativePrompt);
+
 
 // let settings = {
 //     persona: '',
@@ -642,13 +662,101 @@ document.getElementById('negativePrompt').addEventListener('change', updateNegat
 //     sessionId: 1,
 // };
 
+
+// Function to calculate the token count of a message
+function getTokenCount(message) {
+    // Assume each character is roughly equivalent to 4 tokens (approximation)
+    return message.content[0].text.length / 4;
+}
+
+function getRawTextTokenCount(text) {
+    // Log the full content for debugging
+    //console.log("System Prompt Content: ", text);
+    return text.length / 4; // Rough estimate: 1 token ≈ 4 characters
+}
+
+// Function to remove the last user-assistant message pair if the token count exceeds the limit
+function removeLastUserAssistantPairIfOverLimit(systemPrompt, messages, tokenLimit) {
+    let messagesTokenCount = 0;
+
+    // Calculate total token count
+    for (let i = 0; i < messages.length; i++) {
+        messagesTokenCount += getTokenCount(messages[i]);
+    }
+
+    // Calculate token count of the system prompt's content
+    const systemPromptText = systemPrompt.content;
+    const systemPromptTokenCount = getRawTextTokenCount(systemPromptText);
+    console.log("System Prompt token count: " + systemPromptTokenCount);
+    console.log("Messages token count: " + messagesTokenCount);
+
+    const totalTokenCount = systemPromptTokenCount + messagesTokenCount;
+    console.log("Total token count: " + totalTokenCount);
+
+ 
+   // Check if the total token count exceeds the limit
+   if (totalTokenCount > tokenLimit) {
+    let i = 0;
+    let removedMessages = [];
+    console.warn("Warning: The total token count exceeds the limit. Token count: " + totalTokenCount + " (Limit: " + tokenLimit + ")");
+
+    // Recovery step: Ensure the message format is correct
+    // If there are consecutive assistant messages, remove the second one
+    if (messages[0] && messages[1] && messages[0].role === 'user' && messages[1].role === 'user') {
+        removedMessages.push(messages.splice(1, 1)[0]); // Remove the second assistant message
+        console.error("Removed the second consecutive user message as a recovery step.");
+        alert("Removed the second consecutive user message as a recovery step.");
+    }
+
+    // If there are consecutive assistant messages, remove the second one
+    if (messages[0] && messages[1] && messages[0].role === 'assistant' && messages[1].role === 'assistant') {
+        removedMessages.push(messages.splice(1, 1)[0]); // Remove the second assistant message
+        console.error("Removed the second consecutive assistant message as a recovery step.");
+        alert("Removed the second consecutive assistant message as a recovery step.");
+
+    }
+
+    // If the first message is a user message, remove it
+    if (messages[0] && messages[0].role === 'user') {
+        removedMessages.push(messages.shift()); // Remove the first user message
+        console.error("Removed the first user message as a recovery step.");
+        alert("Removed the first user message as a recovery step.");
+
+    }
+
+    // Iterate through messages to find the first user-assistant pair
+    while (i < messages.length) {
+        // Check for user message followed by assistant message
+        if (messages[i].role === 'assistant' && i + 1 < messages.length && messages[i + 1].role === 'user') {
+            // Store the pair for logging
+            removedMessages.push(messages[i], messages[i + 1]);
+            // Remove the user-assistant pair from the beginning
+            messages.splice(i, 2);
+            console.log("Removed the oldest user-assistant pair.");
+            break; // Stop after removing the first pair
+        }
+        i++;
+    }
+
+    // Log the removed messages for debugging
+    if (removedMessages.length > 0) {
+        console.log("Removed messages: ", removedMessages);
+    } else {
+        console.log("No user-assistant pair removed.");
+    }
+}
+
+return messages;
+}
+
 const isFirstMessage = true; 
 let isResend = false;
-async function sendMessage() {
+async function sendMessage(autoinput) {
+    updateRegenerateButton();  // Update the button when the page loads
     if (sendButtonDisabled) return;  // Prevent multiple sends within 8 seconds
     const userInput = document.getElementById('user-input');
-    const message = userInput.value.trim();
-    if (message.trim() === "") return;  // Don't send empty messages
+    const message = autoinput || userInput.value.trim();
+   // if (!message || message.trim() === "") return;  // Don't send empty messages
 
     // Add logic to send the message
     console.log("Sending message:", message);
@@ -661,12 +769,12 @@ async function sendMessage() {
         document.getElementById("send-button").disabled = false;
     }, 8000); // 8-second delay
 
-    document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
+    //document.getElementById('advanced-debugging').value = currentBotMessageElement.innerHTML;
 
    // if (!message) return;
     if (!isResend) {
        // processMessageDataImportance();
-        lastBotMsg = currentBotMessageElement.textContent || currentBotMessageElement.innerHTML;
+        lastBotMsg = getLastAssistantMessage();
         console.log('Updated lastBotMsg:', lastBotMsg);
         lastUserMessage = message;
         messagessent = messagessent + 1;
@@ -675,24 +783,42 @@ async function sendMessage() {
         userInput.value = '';
         botMessages = [];
         currentBotMessageElement = null;
+    } else if (autoinput) {
+        lastBotMsg = getLastAssistantMessage();
+        console.log('Updated lastBotMsg:', lastBotMsg);
+        lastUserMessage = message;
+        document.getElementById('messages-sent').value = messagessent;
+        displayMessage(message, 'user');
+        userInput.value = '';
+        botMessages = [];
+        currentBotMessageElement = null;
+    } else {
+        lastBotMsg = lastBotMsg || settings.greeting;
     }
-    lastBotMsg = lastBotMsg || settings.greeting;
-
     //Define the system message
     const systemPrompt = {
         role: "system",
-        content: `${settings.systemPrompt}
+        content: 
+        `Reponse Goals: ${settings.systemPrompt}
+        Scenario: ${settings.scenario},
+
         Persona: ${settings.persona}
-        Scenario: ${settings.scenario}
         ${settings.context ? `Context: ${settings.context}` : ''}
             ${messagessent <= 4 && settings.useExampleDialogue && settings.exampledialogue 
             ? `Example Dialogue:\n${settings.exampledialogue}` 
             : ''}
-        ${settings.negativePrompt ? `Message Generation Guidelines: ${settings.negativePrompt}` : ''}
+        ${settings.negativePrompt ? `Essential Response Constraints: ${settings.negativePrompt}` : ''}
+
         `,
     };
     
-
+     //Define the system message
+     const scenarioPrompt = {
+        role: "user",
+        content:
+        `Scenario: ${settings.scenario}`,
+    };
+   
     try {    
         await updateSettings();
         // Construct the conversation context
@@ -708,60 +834,161 @@ async function sendMessage() {
         // Retrieve the negative prompt setting
         const appendNegativePrompt = document.getElementById("appendNegativePrompt");
 
-        // Function to construct requestData with optional negative prompt
-        function constructRequestData(messages, settings, negativePromptText) {
-            // Console log for debugging
-            console.log("Messages: " + JSON.stringify(messages));
-        
-            // Construct the base requestData object
-            const requestData = {
-                n_predict: parseInt(settings.maxTokens, 10),
-                messages: [systemPrompt, ...messages],
-              //  max_tokens: parseInt(settings.maxTokens, 10),
-                stream: true,
-                temperature: settings.temperature,
-                prescence_penalty: settings.prescence_penalty,
-                frequency_penalty: settings.frequency_penalty,
-                repeat_penalty: settings.repeat_penalty,
-                min_p: settings.min_p,
-                top_k: settings.top_k,
-                top_p: settings.top_p,
-                cache_prompt: true,
-                t_max_predict_ms: 300000, // timeout after 5 minutes
-            };
-        
-            // Append the negative prompt to the last user's message if the setting is enabled
-            if (appendNegativePrompt.checked && negativePromptText) {
-                // Find the last user message (not assistant's message)
-                let lastUserMessageIndex = -1;
-                for (let i = messages.length - 1; i >= 0; i--) {
-                    if (messages[i].role === "user") {
-                        lastUserMessageIndex = i;
-                        break;
-                    }
-                }
-        
-                if (lastUserMessageIndex !== -1) {
-                    const lastUserMessage = messages[lastUserMessageIndex];
-        
-                    // Check if the negative prompt is already in the message
-                    if (!lastUserMessage.content[0].text.includes(negativePromptText)) {
-                        // Append the negative prompt text directly to the last user's message content
-                        lastUserMessage.content[0].text += `\n\nMessage Generation Guidelines: ${negativePromptText}`;
-                    }
+// Function to construct requestData with optional negative prompt
+function constructRequestData(messages, settings, negativePromptText) {
+    let messagesTokenCount = 0;
+    let lastUserMessageIndex = -1;
+    let originalUserMessage = null;
+    // Remove last user-assistant pair if the token count exceeds the limit
+    messages = removeLastUserAssistantPairIfOverLimit(systemPrompt, messages, settings.tokenLimit);
+    
+    // Calculate total token count
+    for (let i = 0; i < messages.length; i++) {
+        messagesTokenCount += getTokenCount(messages[i]);
+    }
+
+    // Calculate token count of the system prompt's content
+    const systemPromptText = systemPrompt.content;
+    const systemPromptTokenCount = getRawTextTokenCount(systemPromptText);
+    console.log("System Prompt token count: " + systemPromptTokenCount);
+    console.log("Messages token count: " + messagesTokenCount);
+
+    const totalTokenCount = systemPromptTokenCount + messagesTokenCount;
+    console.info("New Total token count: " + totalTokenCount);
+
+    // Get slider value (max sentences)
+    let maxSentences = document.getElementById("SettingsMaxSentencesSlider").value;
+
+    // Find the most recent assistant message
+    let lastAssistantMessage = messages.slice().reverse().find(message => message.role === "assistant");
+
+    if (lastAssistantMessage) {
+        let lastMessageText = lastAssistantMessage.content[0].text;
+
+        // Split the text into sentences by common sentence-ending punctuation marks
+        let sentenceCount = lastMessageText.split(/[.!?~]/).filter(Boolean).length;
+
+        // Provide feedback to the assistant
+        if (sentenceCount > maxSentences) {
+           // alert(`The generated message exceeds the maximum sentence limit by ${sentenceCount - maxSentences} sentences. Please try to be more concise.`);
+
+            // Modify the assistant's message to fit the limit
+            let truncatedMessage = lastMessageText.split(/[.!?~]/).slice(0, maxSentences).join('. ') + ".";
+
+            // Replace the assistant's message content with the truncated message
+            lastAssistantMessage.content[0].text = truncatedMessage;
+
+            // Provide feedback to the AI that the response should be shorter
+            const feedbackMessage = `\n\n(Important: The assistant's response exceeded the sentence limit by ${sentenceCount - maxSentences} sentences. Please make sure your next response is descriptive but stays within the ${maxSentences} sentence limit. Conciseness with detail is key!)`;
+            console.warn("Feedback to AI: " + feedbackMessage + " \n\n*This is to avoid message cutoffs!*");
+
+            // Optionally, append the feedback message to the system prompt or elsewhere
+            // systemPrompt.content += `\n\n${feedbackMessage}`; // Uncomment this if you want to append feedback to the system prompt
+
+            // Now, we append feedback to the last user message
+         
+            for (let i = messages.length - 1; i >= 0; i--) {
+                if (messages[i].role === "user") {
+                    lastUserMessageIndex = i;
+                    break;
                 }
             }
-        
-            return requestData;
+
+            // Save the original state of the last user message
+            if (lastUserMessageIndex !== -1) {
+                originalUserMessage = JSON.parse(JSON.stringify(messages[lastUserMessageIndex])); // Deep copy
+            }
+            if (lastUserMessageIndex !== -1) {
+                const lastUserMessage = messages[lastUserMessageIndex];
+
+                // Append the feedback to the user's message
+                lastUserMessage.content[0].text += `\n\n(Important: The assistant's response exceeded the sentence limit by ${sentenceCount - maxSentences} sentences. Please make sure your next response is descriptive but stays within the ${maxSentences} sentence limit. Conciseness with detail is key!)`;
+                console.info("Feedback added to user message: " + lastUserMessage.content[0].text);
+            }
+        } else {
+            console.log('Number of sentences in the last assistant message:', sentenceCount);
+
+            for (let i = messages.length - 1; i >= 0; i--) {
+                if (messages[i].role === "user") {
+                    lastUserMessageIndex = i;
+                    break;
+                }
+            }
+            // Append the negative prompt to the last user's message if the setting is enabled
+
+            if (lastUserMessageIndex !== -1) {
+                originalUserMessage = JSON.parse(JSON.stringify(messages[lastUserMessageIndex])); // Deep copy
+            }
+            if (appendNegativePrompt.checked && negativePromptText) {
+                // Save the original state of the last user message
+                if (lastUserMessageIndex !== -1) {
+                    const lastUserMessage = messages[lastUserMessageIndex];
+                        lastUserMessage.content[0].text += `\n\nEssential Response Constraints: ${negativePromptText}`;
+                }
+            }
         }
-        
+    } else {
+        console.log("No assistant message found.");
+    }
+
+    // Console log for debugging
+    console.log("Messages after possible removal: " + JSON.stringify(messages));
+
+    // Construct the base requestData object
+    const requestData = {
+        messages: [systemPrompt, ...messages],
+        stream: true,
+        temperature: settings.temperature,
+        prescence_penalty: settings.prescence_penalty,
+        frequency_penalty: settings.frequency_penalty,
+        repeat_penalty: settings.repeat_penalty,
+        min_p: settings.min_p,
+        top_k: settings.top_k,
+        top_p: settings.top_p,
+        repeat_last_n: settings.repeat_last_n,
+        cache_prompt: true,
+        t_max_predict_ms: 300000, // timeout after 5 minutes
+    };
+
+
+// After `requestData` is returned, revert the user's message to its original state
+if (originalUserMessage && lastUserMessageIndex !== -1) {
+    messages[lastUserMessageIndex] = originalUserMessage;
+}
+
+    return requestData;
+}
+
+
 const requestData = constructRequestData(messages, settings, settings.negativePrompt);
+
 console.log("RequestData: ", requestData);
 
        // displayMessage(systemPrompt, 'system');
         console.log('Request Data:', JSON.stringify(requestData, null, 2));
         
-        const response = await fetch("https://api.botbridge.net/api/send", {
+        // const response = await fetch("https://api.botbridge.net/api/send", {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': 'Bearer ' + localStorage.getItem('token'), // Use 'Bearer' followed by the token
+        //     },
+        //     body: JSON.stringify(requestData)
+        // });
+        
+        const selectedModel = localStorage.getItem('selectedModel') || "NethralIQ"; // Retrieve selected model from localStorage
+
+        // Set the API URL based on the selected model
+        let apiUrl = "https://api.botbridge.net/api/send"; // Default API URL
+
+        // Customize API request based on selected model
+        if (selectedModel === "NethralIQ") {
+            apiUrl = "https://api.botbridge.net/api/send"; // Example for Gastonova model (adjust URL as needed)
+        } else if (selectedModel === "NemoMix") {
+            apiUrl = "https://13b-apibridge1.botbridgeai.net/v1/chat/completions"; // Example for Aetherius model (adjust URL as needed)
+        }
+
+      const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -769,7 +996,7 @@ console.log("RequestData: ", requestData);
             },
             body: JSON.stringify(requestData)
         });
-        
+
         // const response = await fetch("https://period-ann-patch-ram.trycloudflare.com/v1/chat/completions", {
         //     method: 'POST',
         //     headers: {
@@ -810,10 +1037,10 @@ console.log("RequestData: ", requestData);
                 return; // Exit early if the request failed
         } else if (response.status === 429) {
             const errorData = await response.json();
-            // displayBotMessage(errorData.message || `Whoa there! It seems you're trying to send messages faster than our circuits can handle! 🏎️💨 Slow down, or our AI might just short-circuit from excitement! 😅`, 'temporary-notice');
-            //displayBotMessage(`Whoa there! It seems you're trying to send messages faster than our circuits can handle! 🏎️💨 Slow down, or our AI might just short-circuit from all the excitement! 😅`, 'temporary-notice');
-            displayBotMessage(errorData.message || `Whoa there! It looks like you're trying to send messages faster than our circuits can handle. Even our AI needs a moment to catch its breath! Slow down, or we might just short-circuit! 😏`, 'temporary-notice');
-            return; // Exit early if the request failed            
+           // displayBotMessage(errorData.message || `Whoa there! It seems you're trying to send messages faster than our circuits can handle! 🏎️💨 Slow down, or our AI might just short-circuit from excitement! 😅`, 'temporary-notice');
+            displayBotMessage(`Whoa there! It seems you're trying to send messages faster than our circuits can handle! 🏎️💨 Slow down, or our AI might just short-circuit from excitement! 😅`, 'temporary-notice');
+            //displayBotMessage(errorData.message || `Whoa there! It looks like you're trying to send messages faster than our circuits can handle. Even our AI needs a moment to catch its breath! Slow down, or we might just short-circuit! 😏`, 'temporary-notice');
+            return; // Exit early if the request failed
         } else {
             const errorData = await response.json();
             displayBotMessage(errorData.message || `Unknown error occurred. ${response.status}`, 'temporary-notice');
@@ -845,9 +1072,9 @@ console.log("RequestData: ", requestData);
                     const jsonString = line.substring(6).trim(); // Remove the 'data: ' prefix
     
                     // Skip the '[DONE]' message
-                    if (jsonString === '[DONE]') {
+                    if (jsonString === '[DONE]' || jsonString === '<|im_end|>') {
                         continue; // Skip this line
-                    }
+                    } 
     
                     try {
                         const jsonResponse = JSON.parse(jsonString);
@@ -956,10 +1183,25 @@ function regenerateMessage() {
             // Send the last user message again
             sendMessage(); // Ensure this function is defined to handle sending the message
         } else {
-            displayMessage('No previous user message found to regenerate.', 'assistant');
+            //displayMessage('No previous user message found to regenerate.', 'assistant');
+
+             // remove the last assistant message if needed
+             if (messages.length = 1) {
+                autoinput = "Generate a long first greeting message. The message should maintain the personality outlined in the system prompt. The message should feel natural and fitting for the scenario.";
+                messages.pop(); // Remove the last message from the array
+                deleteMessage(0, true);
+                sendMessage(autoinput);
+            }
         }
     } else {
-        displayMessage('No previous assistant message found to regenerate.', 'assistant');
+          // remove the last assistant message if needed
+          if (messages.length = 1) {
+            autoinput = "Generate a long first greeting message. The message should maintain the personality outlined in the system prompt. The message should feel natural and fitting for the scenario.";
+            messages.pop(); // Remove the last message from the array
+            sendMessage(autoinput);
+        } else {
+            displayMessage('No previous assistant message found to regenerate.', 'assistant');
+        }
     }
 }
 
@@ -974,114 +1216,114 @@ function getLastAssistantMessage() {
     }
     return null; // Return null if no assistant message is found
 }
-let isSnowflakeActive = false; // Flag to track if snowflake effect is active
-let isSantaActive = false; // Flag to track if Santa image effect is active
-let isGiftBoxActive = false; // Flag to track if gift box effect is active
+// let isSnowflakeActive = false; // Flag to track if snowflake effect is active
+// let isSantaActive = false; // Flag to track if Santa image effect is active
+// let isGiftBoxActive = false; // Flag to track if gift box effect is active
 
-function showSnowflakes() {
-    if (isSnowflakeActive) return; // Prevent triggering if snowflake effect is active
-    isSnowflakeActive = true; // Set flag to active
+// function showSnowflakes() {
+//     if (isSnowflakeActive) return; // Prevent triggering if snowflake effect is active
+//     isSnowflakeActive = true; // Set flag to active
 
-    // Function to create a snowflake at a random position
-    function createSnowflake() {
-        const snowflake = document.createElement('div');
-        snowflake.classList.add('snowflake');
-        snowflake.textContent = '❄️';
+//     // Function to create a snowflake at a random position
+//     function createSnowflake() {
+//         const snowflake = document.createElement('div');
+//         snowflake.classList.add('snowflake');
+//         snowflake.textContent = '❄️';
         
-        // Randomly decide whether to position the snowflake on the left or right
-        const isLeftSide = Math.random() < 0.5; // 50% chance for left side
+//         // Randomly decide whether to position the snowflake on the left or right
+//         const isLeftSide = Math.random() < 0.5; // 50% chance for left side
     
-        if (isLeftSide) {
-            // Random horizontal position favoring the left 25% of the viewport width
-            const randomX = Math.random() * 25; // Generate a value between 0% and 25%
-            snowflake.style.left = `${randomX}%`; // Position using the left property
-        } else {
-            // Random horizontal position favoring the right 25% of the viewport width
-            const randomX = Math.random() * 25; // Generate a value between 0% and 25%
-            snowflake.style.right = `${randomX}%`; // Position using the right property
-        }
+//         if (isLeftSide) {
+//             // Random horizontal position favoring the left 25% of the viewport width
+//             const randomX = Math.random() * 25; // Generate a value between 0% and 25%
+//             snowflake.style.left = `${randomX}%`; // Position using the left property
+//         } else {
+//             // Random horizontal position favoring the right 25% of the viewport width
+//             const randomX = Math.random() * 25; // Generate a value between 0% and 25%
+//             snowflake.style.right = `${randomX}%`; // Position using the right property
+//         }
     
-        // Random size between 10px and 50px
-        const randomSize = Math.random() * 40 + 20;
-        snowflake.style.fontSize = `${randomSize}px`;
+//         // Random size between 10px and 50px
+//         const randomSize = Math.random() * 40 + 20;
+//         snowflake.style.fontSize = `${randomSize}px`;
         
-        // Add the snowflake to the document body
-        document.body.appendChild(snowflake);
+//         // Add the snowflake to the document body
+//         document.body.appendChild(snowflake);
         
-        // Animate snowflake falling from the top
-        snowflake.style.animation = `fall ${randomSize / 10 + 2}s linear`; // Adjust fall speed based on size
+//         // Animate snowflake falling from the top
+//         snowflake.style.animation = `fall ${randomSize / 10 + 2}s linear`; // Adjust fall speed based on size
         
-        // Remove the snowflake after the animation completes
-        setTimeout(() => snowflake.remove(), (randomSize / 10 + 2) * 1000);
-    }
+//         // Remove the snowflake after the animation completes
+//         setTimeout(() => snowflake.remove(), (randomSize / 10 + 2) * 1000);
+//     }
     
 
-    // Function to generate snowflakes over a period of time
-    function generateSnowflakes() {
-        const interval = Math.random() * 1000 + 500; // Random interval between 500ms and 1500ms
-        createSnowflake();
+//     // Function to generate snowflakes over a period of time
+//     function generateSnowflakes() {
+//         const interval = Math.random() * 1000 + 500; // Random interval between 500ms and 1500ms
+//         createSnowflake();
         
-        // Keep generating snowflakes at random intervals
-        setTimeout(generateSnowflakes, interval);
-    }
+//         // Keep generating snowflakes at random intervals
+//         setTimeout(generateSnowflakes, interval);
+//     }
 
-    generateSnowflakes();
+//     generateSnowflakes();
 
-    // Deactivate effect after 10 seconds
-    setTimeout(() => {
-        isSnowflakeActive = false;
-    }, 30000);
-}
+//     // Deactivate effect after 10 seconds
+//     setTimeout(() => {
+//         isSnowflakeActive = false;
+//     }, 30000);
+// }
 
-function showSantaImage() {
-    if (isSantaActive) return; // Prevent triggering if Santa effect is active
-    isSantaActive = true; // Set flag to active
-    playSantaVoice();
-    const santaImage = document.createElement('img');
-    santaImage.src = 'santa.png';
-    santaImage.classList.add('santa-image');
-    document.body.appendChild(santaImage);
+// function showSantaImage() {
+//     if (isSantaActive) return; // Prevent triggering if Santa effect is active
+//     isSantaActive = true; // Set flag to active
+//     playSantaVoice();
+//     const santaImage = document.createElement('img');
+//     santaImage.src = 'santa.png';
+//     santaImage.classList.add('santa-image');
+//     document.body.appendChild(santaImage);
     
-    // Remove the Santa image after a few seconds
-    setTimeout(() => {
-        santaImage.remove();
-        isSantaActive = false; // Deactivate the Santa effect
-    }, 30000);
-}
+//     // Remove the Santa image after a few seconds
+//     setTimeout(() => {
+//         santaImage.remove();
+//         isSantaActive = false; // Deactivate the Santa effect
+//     }, 30000);
+// }
 
-function showGiftBoxes() {
-    if (isGiftBoxActive) return; // Prevent triggering if gift box effect is active
-    isGiftBoxActive = true; // Set flag to active
+// function showGiftBoxes() {
+//     if (isGiftBoxActive) return; // Prevent triggering if gift box effect is active
+//     isGiftBoxActive = true; // Set flag to active
 
-    const giftBox = document.createElement('div');
-    giftBox.classList.add('gift-box');
-    giftBox.textContent = '🎁';
-    document.body.appendChild(giftBox);
+//     const giftBox = document.createElement('div');
+//     giftBox.classList.add('gift-box');
+//     giftBox.textContent = '🎁';
+//     document.body.appendChild(giftBox);
     
-    // Remove the gift box after animation
-    setTimeout(() => {
-        giftBox.remove();
-        isGiftBoxActive = false; // Deactivate the gift box effect
-    }, 5000);
-}
+//     // Remove the gift box after animation
+//     setTimeout(() => {
+//         giftBox.remove();
+//         isGiftBoxActive = false; // Deactivate the gift box effect
+//     }, 5000);
+// }
 
-function triggerSpecialEffect(effect) {
-    if (effect === 'merry-christmas') {
-        document.getElementById('christmas-music').play();
-        showSnowflakes();
-    } else if (effect === 'santa') {
-        showSantaImage();
-    } else if (effect === 'snow') {
-        showSnowflakes();
-    } else if (effect === 'gifts') {
-        showGiftBoxes();
-    }
-}
+// function triggerSpecialEffect(effect) {
+//     if (effect === 'merry-christmas') {
+//         document.getElementById('christmas-music').play();
+//         showSnowflakes();
+//     } else if (effect === 'santa') {
+//         showSantaImage();
+//     } else if (effect === 'snow') {
+//         showSnowflakes();
+//     } else if (effect === 'gifts') {
+//         showGiftBoxes();
+//     }
+// }
 
-// Example of playing sound when 'Santa' is mentioned
-function playSantaVoice() {
-    document.getElementById('santa-voice').play();
-}
+// // Example of playing sound when 'Santa' is mentioned
+// function playSantaVoice() {
+//     document.getElementById('santa-voice').play();
+// }
 
 // Define showSnowflakes, showSantaImage, showGiftBoxes, etc.
 
@@ -1096,6 +1338,45 @@ let currentBotMessageElement = null;
 let currentBotMessageIndex = -1; // Index for tracking the current bot message
 
 function displayMessage(content, sender, isFinal = false, isLoading = false) {
+  
+    // Handle opacity slider
+    const opacityValue = document.getElementById('opacity-slider').value / 100;
+
+    // Select the chat background element and any other image containers
+    // const chatContainer = document.getElementById('chat-container');
+    // const leftImageContainer = document.getElementById('left-image-container');
+    // const rightImageContainer = document.getElementById('right-image-container');
+    const messageElements = document.querySelectorAll('.message');
+
+    // // Optionally update opacity for side images if needed
+    // leftImageContainer.style.opacity = opacityValue;
+    // rightImageContainer.style.opacity = opacityValue;
+
+    messageElements.forEach(message => {
+        message.style.setProperty('--text-shadow', opacityValue);
+    });
+
+
+    const lineWidth = document.getElementById('opacity-slider-outline').value;
+    
+
+    messageElements.forEach(message => {
+        message.style.setProperty('--text-outline', lineWidth+'px');
+    });
+
+    const opacityMessagesValue = document.getElementById('opacity-slider-messages').value / 100; // Convert the slider value to a fraction (0-1)
+    
+    // Apply the opacity to the background using the custom property
+    messageElements.forEach(message => {
+        // Update the custom property for background opacity
+        message.style.setProperty('--bg-opacity', opacityMessagesValue);
+    });
+
+
+
+
+
+
     let userName = document.getElementById('user-name').value.trim();
     let charName = settings.charname || "{{char}}";
     if (!userName) { userName = "{{user}}"; }
@@ -1113,9 +1394,9 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         .replace(/{{user}}|{user}/g, userName) // Replace both {{user}} and {user} with the actual user name
         .replace(/{{char}}|{char}/g, charName) // Replace both {{user}} and {user} with the actual user name
  // Add custom Christmas formatting:
- .replace(/Merry Christmas/gi, '<span class="christmas-bold">🎅 Merry Christmas! 🎄</span>') // Special Christmas greeting
- .replace(/Santa/gi, '<span class="christmas-font">🎅 Santa</span>') // Special Santa formatting
- .replace(/gifts/gi, '<span class="christmas-gifts">🎁 gifts 🎁</span>') // Special gifts formatting
+//  .replace(/Merry Christmas/gi, '<span class="christmas-bold">🎅 Merry Christmas! 🎄</span>') // Special Christmas greeting
+//  .replace(/Santa/gi, '<span class="christmas-font">🎅 Santa</span>') // Special Santa formatting
+//  .replace(/gifts/gi, '<span class="christmas-gifts">🎁 gifts 🎁</span>') // Special gifts formatting
 //  .replace(/snow/gi, '<span class="snowflake">❄️ snow ❄️</span>') // Snowflakes for the word "snow"
       // Add colorful text formatting for specific syntax |color|text|color|
     .replace(/\|(\w+)\|([^|]+)\|\1\|/g, (match, color, text) => {
@@ -1123,20 +1404,20 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         return `<span style="color:${color};">${text}</span>`;
     });
    
-      // Check for Christmas keywords to trigger special effects
-   if (content.match(/Merry Christmas/i)) {
-    triggerSpecialEffect('merry-christmas');
-} else if (content.match(/Santa/i)) {
-    triggerSpecialEffect('santa');
-} else if (content.match(/gifts/i)) {
-    triggerSpecialEffect('gifts');
-} else if (content.match(/snow/i)) {
-    triggerSpecialEffect('snow');
-}
+//       // Check for Christmas keywords to trigger special effects
+//    if (content.match(/Merry Christmas/i)) {
+//     triggerSpecialEffect('merry-christmas');
+// } else if (content.match(/Santa/i)) {
+//     triggerSpecialEffect('santa');
+// } else if (content.match(/gifts/i)) {
+//     triggerSpecialEffect('gifts');
+// } else if (content.match(/snow/i)) {
+//     triggerSpecialEffect('snow');
+// }
  // Prepare message object in the desired format
     const messageObject = {
         role: sender,
-        content: [{ type: 'text', text: content }]
+        content: [{ type: "text", "text": sanitizedContent }]
     };
 
     if (isLoading) {
@@ -1155,8 +1436,7 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
         if (currentBotMessageElement) {
             currentBotMessageElement.innerHTML =  `
         <span class="message-content">${sanitizedContent}</span>
-        <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
-        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+
         `;
         }
         // If the message is final, update the navigation header
@@ -1164,61 +1444,121 @@ function displayMessage(content, sender, isFinal = false, isLoading = false) {
             // Store bot message in the botMessages array
             botMessages.push(sanitizedContent);
             currentBotMessageIndex = botMessages.length - 1; // Update index for regeneration
-            chatContainer.scrollTop = chatContainer.scrollHeight; //Scrolls to bottom as new message is generated.
+            //chatContainer.scrollTop = chatContainer.scrollHeight; //Scrolls to bottom as new message is generated.
 
             // Remove previous bot message header if exists
             const previousHeader = document.querySelector('.message-header');
             if (previousHeader) {
-                previousHeader.remove();
+                if (isResend) {
+                    previousHeader.remove();
+                } else {
+                    previousHeader.innerHTML = `
+                    <div class="message-header">
+                        <div class="nav-arrows-container">
+                        </div>
+                        <div class="buttons">
+                            <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+                            <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+                        </div>
+                    </div>
+                
+                    `;
+                }
             }
+//                            <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
 
-            // Create a new message header with navigation arrows
-            const messageHeader = document.createElement('div');
-            messageHeader.className = 'message-header';
-            messageHeader.innerHTML = `
-            <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
-            <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
-            `;
+            if (!isResend) {
+                // Create a new message header with navigation arrows
+                const messageHeader = document.createElement('div');
+                messageHeader.className = 'message-header';
+                messageHeader.innerHTML = `
+                <div class="message-header">
+                    <div class="nav-arrows-container">
+                        <span class="nav-arrows ${currentBotMessageIndex === 0 ? 'disabled' : ''}" onclick="navigateBotMessages(-1)">&#9664;</span>
+                        <span class="nav-arrows ${currentBotMessageIndex === botMessages.length - 1 ? 'disabled' : ''}" onclick="navigateBotMessages(1)">&#9654;</span>
+                    </div>
+                    <div class="buttons">
+                        <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+                        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+                    </div>
+                </div>
 
-            // Append message header to the chat container
-            chatContainer.insertBefore(messageHeader, currentBotMessageElement);
+                `;
+//                        <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+
+                // Append message header to the chat container
+                chatContainer.insertBefore(messageHeader, currentBotMessageElement);
+            }
         }
-
         updateArrowStates();
+
     } else {
         const messageElement = document.createElement('div');
         messageElement.className = `message ${sender}`;
         messageElement.innerHTML = `
         <span class="message-content">${sanitizedContent}</span>
-        <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
-        <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+       
         `;
         chatContainer.appendChild(messageElement);
+
+        const messageHeader = document.createElement('div');
+        
+        messageHeader.className = 'message-header';
+        messageHeader.innerHTML = `
+         <div class="message-header">
+            <div class="nav-arrows-container">
+            </div>
+            <div class="buttons">
+                <button class="edit-btn" onclick="enableEditMode(this, ${messages.length})">Edit</button>
+                <button class="delete-btn" onclick="deleteMessage(${messages.length})">Delete</button>
+            </div>
+        </div>
+
+        `;
+    //                <button class="audio-btn" onclick="speakMessage(${messages.length})">Send to Audio</button>
+
+        // Append message header to the chat container
+        chatContainer.insertBefore(messageHeader, messageElement);
     }
 
-    if (isFinal || sender === 'user'){
+    if (isFinal || sender === 'user') {
         // Add the message object to the messages array
         messages.push(messageObject);
         console.log('Messages array:', messages); // Debugging to view the array
         // Update arrow states
+        
         }
     // // Scroll to the bottom of the chat container
     // chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-function deleteMessage(index) {
+function escapeQuotes(str) {
+    return str.replace(/'/g, "\\'");
+}
+
+function deleteMessage(index, system = false) {
     // Ask for user confirmation before deleting
-    const userConfirmed = confirm('Are you sure you want to delete this message?');
-    if (!userConfirmed) {
-        return; // Exit if the user cancels
+    if (!system) {
+        const userConfirmed = confirm('Are you sure you want to delete this message?');
+        if (!userConfirmed) {
+            return; // Exit if the user cancels
+        }
     }
 
     // Remove the message from the messages array
     messages.splice(index, 1);
 
-    // Remove the corresponding message element from the UI
+    // Remove the corresponding message element and header from the UI
     const messageElements = document.querySelectorAll('.message');
-    messageElements[index].remove();
+    const messageHeaderElements = document.querySelectorAll('.message-header');
+
+    // Remove both message body and header
+    if (messageElements[index]) {
+        messageElements[index].remove();
+    }
+    if (messageHeaderElements[index]) {
+        messageHeaderElements[index].remove();
+    }
 
     // Update the botMessages array if the message was from the assistant
     if (messages[index]?.role === 'assistant') {
@@ -1229,6 +1569,7 @@ function deleteMessage(index) {
     updateMessageIndexes();
     console.log('Updated messages array after deletion:', messages);
 }
+
 
 function updateMessageIndexes() {
     // Update the message indexes after deletion
@@ -1256,6 +1597,7 @@ function navigateBotMessages(direction) {
 }
 
 function updateArrowStates() {
+    console.log("updating arrow states");
     const leftArrow = document.querySelector('.nav-arrows:first-of-type');
     const rightArrow = document.querySelector('.nav-arrows:last-of-type');
 
@@ -1268,7 +1610,8 @@ function updateArrowStates() {
 }
 
 function enableEditMode(button, index) {
-    const messageElement = button.parentElement; // The parent element of the button
+    const messageElements = document.querySelectorAll('.message');
+    const messageElement = messageElements[index];
     const messageContentElement = messageElement.querySelector('.message-content'); // Locate the content element
     const currentContent = messageContentElement.innerHTML;
 
@@ -1289,7 +1632,8 @@ function enableEditMode(button, index) {
 
 
 function saveEditedMessage(button, index) {
-    const messageElement = button.parentElement;
+    const messageElements = document.querySelectorAll('.message');
+    const messageElement = messageElements[index];
     const editArea = messageElement.querySelector('.edit-area');
     const newContent = editArea.value.replace(/\n/g, '<br>');
 
@@ -1331,6 +1675,7 @@ function autoResize() {
     // Set the height to the scrollHeight to expand it to fit content
     this.style.height = `${this.scrollHeight}px`; 
 }
+
 
 async function updateQueueCounter() {
     // Fetch the number of jobs in the queue
