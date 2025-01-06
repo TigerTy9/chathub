@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <audio id="christmas-music">
-        <source src="christmas_jingle.mp3" type="audio/mpeg">
-      </audio>
-      
-      <audio id="santa-voice">
-        <source src="ho_ho_ho.mp3" type="audio/mpeg">
-      </audio>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat - BOTBRIDGE.AI</title>
     <link rel="stylesheet" href="css/chat.css">
     <link rel="stylesheet" href="css/menu2.0.css">
+    <link rel="stylesheet" href="css/chatbeta-extras.css">
 
     <styles>
         <style>
@@ -171,139 +165,206 @@
 </head>
 <body>
 
-     <!-- Header -->
-     <header>
-<!-- Header -->
-<header>
-    <nav class="navbar">
-        <div class="left-content">
-            <a href="/" class="logo"> <!-- Make the logo clickable -->
-            <div class="logo">
-                <img src="logo.png" alt=" ">
-            </div>
-        </a>
-        <a href="/" class="text">
-            <div class="text">
-                <span class="letter letter-1">E</span>
-                <span class="letter letter-2">F</span>
-                <span class="letter letter-3">R</span>
-                <span class="letter letter-4">O</span>
-                <span class="letter letter-5">.</span>
-                <span class="letter letter-6">A</span>
-                <span class="letter letter-7">I</span>
-            </div>
-        </a>
+   <!-- Header -->
+    <header>
+        <div id="maintenance-warning" class="maintenance-warning">
+            <p id="maintenance-message"></p>
+            <button class="close-btn">×</button>
         </div>
-<div class="right-content">
-    <ul class="nav-links">
-        <!-- Characters with dropdown -->
-        <li class="dropdown">
-            <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
-            <div class="dropdown-content">
-                <a href="index.html">Characters Hub</a>
-                <a href="editor.html">Upload Character</a>
-                <a href="mycharacters.html">My Characters</a>
+        <nav class="navbar">
+            <div class="left-content">
+                <a href="/" class="logo"> <!-- Make the logo clickable -->
+                <div class="logo">
+                    <img src="logo.png" alt=" ">
+                </div>
+            </a>
+            <a href="/" class="text">
+                <div class="text">
+                    <span class="letter letter-1">B</span>
+                    <span class="letter letter-2">O</span>
+                    <span class="letter letter-3">T</span>
+                    <span class="letter letter-4">B</span>
+                    <span class="letter letter-5">R</span>
+                    <span class="letter letter-6">I</span>
+                    <span class="letter letter-7">D</span>
+                    <span class="letter letter-8">G</span>
+                    <span class="letter letter-9">E</span>
+                    <span class="letter letter-10">.</span>
+                    <span class="letter letter-11">A</span>
+                    <span class="letter letter-12">I</span>
+                </div>
+            </a>
             </div>
-        </li>
+    <div class="right-content">
+        <ul class="nav-links">
+            <!-- Characters with dropdown -->
+            <li class="dropdown">
+                <a href="index.html" class="dropbtn" onclick="toggleDropdown(event)">Characters</a>
+                <div class="dropdown-content">
+                    <a href="index.html">Characters Hub</a>
+                    <a href="editor.html">Upload Character</a>
+                    <a href="mycharacters.html">My Characters</a>
+                </div>
+            </li>
 
-        <!-- Community with dropdown -->
-        <li class="dropdown">
-            <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
-            <div class="dropdown-content">
-                <a href="rules.html">Rules</a>
-                <a href="join-our-team.html">Get Involved in the Community</a>
+            <!-- Community with dropdown -->
+            <li class="dropdown">
+                <a href="rules.html" class="dropbtn" onclick="toggleDropdown(event)">Community</a>
+                <div class="dropdown-content">
+                    <a href="rules.html">Rules</a>
+                    <a href="join-our-team.html">Get Involved in the Community</a>
+                </div>
+            </li>
+
+            <!-- Account with dropdown -->
+            <li class="dropdown">
+                <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
+                <div class="dropdown-content">
+                    <a href="myaccount.html">Account</a>
+                    <a href="mylikes.html">My Likes</a>
+                    <a href="login.html">Login</a>
+                </div>
+            </li>
+
+            <!-- Help with dropdown -->
+            <li class="dropdown">
+                <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
+                <div class="dropdown-content">
+                    <a href="documentation.html">Documentation</a>
+                    <a href="updates.html">Updates & Features</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </li>
+
+            <!-- Contribute Button -->
+            <li>
                 <a href="contribute.html" class="nav-btn">Contribute</a>
-            </div>
-        </li>
+            </li>
+        </ul>     
 
-        <!-- Account with dropdown -->
-        <li class="dropdown">
-            <a href="myaccount.html" class="dropbtn" onclick="toggleDropdown(event)">Account</a>
-            <div class="dropdown-content">
-                <a href="myaccount.html">Account</a>
-                <a href="mylikes.html">My Likes</a>
-                <a href="login.html">Login</a>
-            </div>
-        </li>
+        <!-- Search bar -->
+        <!-- <input type="text" id="search-bar" placeholder="Search characters..." class="search-bar"> -->
+        <div id="login-status" class="login-status"></div>
 
-        <!-- Help with dropdown -->
-        <li class="dropdown">
-            <a href="contact.html" class="dropbtn" onclick="toggleDropdown(event)">Help</a>
-            <div class="dropdown-content">
-                <a href="documentation.html">Documentation</a>
-                <a href="updates.html">Updates & Features</a>
-                <a href="contact.html">Contact</a>
-            </div>
-        </li>
-
-    </ul>     
-
-        <div id="login-status" class="login-status"></div> <!-- Element to display user login status -->
-
-        <!-- Popup Modal for Login Warning -->
-        <div id="login-popup" class="login-popup">
-            <div class="popup-content">
-                <p>You must be logged in to chat. Please log in or register to continue.</p>
-                <button id="login-btn">Log In</button>
-            </div>
-        </div>
-        
         <!-- Hamburger menu for mobile view -->
-    <div class="hamburger" onclick="toggleMenu()">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-    </div>    
-</div>
-
+        <div class="hamburger" onclick="toggleMenu()">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>  
+    </div>
 </nav>
     </header>
     <div id="main-content">
-        <div class="desktop-only-ad-2">
+        <script>
+        // Function to decode JWT and check for the Ad-Exempt claim
+        function isAdExempt(token) {
+            if (!token) return false; // If there's no token, assume not exempt
+        
+            // Decode the JWT (assuming it's a standard JWT with 3 parts)
+            const payload = token.split('.')[1]; // Get the payload part
+            const decodedPayload = JSON.parse(atob(payload)); // Decode base64 URL and parse as JSON
+        
+            return decodedPayload['AdExempt'] === true; // Check the Ad-Exempt claim
+        }
+        
+        let adExempt = false; // Check if the user is Ad-Exempt
+        const userToken = localStorage.getItem('token'); // Replace with your method of obtaining the token
+        
+        adExempt = isAdExempt(userToken);
+        </script>
 
-    <!-- JuicyAds v3.0 -->
-    <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
-    <ins id="1073770" data-width="728" data-height="102"></ins>
-    <script type="text/javascript" data-cfasync="false" async>(adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073770});</script>
-    <!--JuicyAds END-->
+    <div class="desktop-only-ad-2">
     </div>
 
     <div class="mobile-only-ad-2">
-
-        <!-- JuicyAds v3.0 -->
-        <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
-        <ins id="1073773" data-width="300" data-height="62"></ins>
-        <script type="text/javascript" data-cfasync="false" async>(adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073773});</script>
-        <!--JuicyAds END-->
     </div>
-        <div id="chat-container">
-        </div>
-        <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
 
+    <!-- Audio Players for Each Generated Clip -->
+    <div id="audioPlayersContainer"></div>
+    <div id="main-content">
+        <button id="toggleMenuBtn" class="menu-btn">Show Menu</button>
+        <div id="imageMenu" class="menu-container">
+
+          <!-- Navigation arrows to cycle through images -->
+          <div class="image-navigation">
+            <button id="prevImageBtn">← Previous</button>
+            <button id="nextImageBtn">Next →</button>
+        </div>
+        <!-- SFW Toggle -->
+        <input type="checkbox" id="sfwToggle" checked /> Safer Content Mode
+
+
+            <form id="fetchImageForm">
+                <!-- <label for="bucketName">Bucket Name:</label>
+                <input type="text" id="bucketName" name="bucketName" required> -->
+                <!-- <label for="objectKey">Object Key:</label>
+                <input type="text" id="objectKey" name="objectKey" required> -->
+                <label>Image Position:</label>
+                <label for="background">
+                    <input type="radio" id="background" name="imagePosition" value="background" checked> Background </label>
+                <label for="left">
+                    <input type="radio" id="left" name="imagePosition" value="left"> Left </label>
+                <label for="right">
+                    <input type="radio" id="right" name="imagePosition" value="right"> Right </label>
+                <button type="submit">Fetch Image</button>
+            </form>
+            <label for="opacity-slider">Text Shadow:</label>
+            <input type="range" id="opacity-slider" min="0" max="100" value="80">
+            <label for="opacity-slider-messages">Message Opacity:</label>
+            <input type="range" id="opacity-slider-messages" min="0" max="100" value="70">
+            <label for="opacity-slider-outline">Text Outline:</label>
+            <input type="number" id="opacity-slider-outline" min="0" max="1.5" value="0" step="0.01">
+        </div>
+        <script src="js/scripts/chat/fetchbgimages.js"></script>
+        <!-- Button to manually trigger saving chat messages -->
+        <button id="save-chat-button">Save Chat</button>
+        <!-- Parent container for chat and images -->
+        <div id="chat-wrapper">
+            <div id="left-image-container"></div> <!-- Left side image container -->
+            <div id="chat-container">
+                <div class="chat-content">
+                    <!-- Messages and chat content will go here -->
+                </div>
+            </div>
+            
+            <div id="right-image-container"></div> <!-- Right side image container -->
+        </div>
+        <div id="input-wrapper">
+            <div id="input-container">
+                <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
+                <button id="send-button" onclick="sendMessage()">Send</button>
+                <button id="regenerate-button" onclick="regenerateMessage()">Regenerate Message</button>
+            </div>
+        </div>        
+        <div id="navigation-controls"></div> <!-- This is where the buttons will be added -->
+<script>
+   function updateRegenerateButton() {
+    const regenerateButton = document.getElementById("regenerate-button");
+
+    // Check if there is only one or zero messages in the array
+    if (messages.length <= 1) {
+        regenerateButton.textContent = "Random New Scenario";  // Update the button text
+        regenerateButton.setAttribute("onclick", "regenerateMessage()");  // Change the onclick to generateNewScenario
+    } else {
+        regenerateButton.textContent = "Regenerate Message";  // Default button text
+        regenerateButton.setAttribute("onclick", "regenerateMessage()");  // Default onclick action
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    updateRegenerateButton();  // Update the button when the page loads
+});
+
+</script>
 <!-- Left-side Ad -->
 <div class="desktop-only-ad left-ad" id="leftAd">
-    <!-- JuicyAds v3.0 -->
-    <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
-    <ins id="1073768" data-width="160" data-height="600"></ins>
-    <script type="text/javascript" data-cfasync="false" async>
-        (adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073768});
-    </script>
-    <!-- JuicyAds END -->
-
     <!-- Close button -->
     <button class="close-btn" onclick="closeAd('leftAd')">&times;</button>
 </div>
 
 <!-- Right-side Ad -->
 <div class="desktop-only-ad right-ad" id="rightAd">
-    <!-- JuicyAds v3.0 -->
-    <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
-    <ins id="1073768" data-width="160" data-height="600"></ins>
-    <script type="text/javascript" data-cfasync="false" async>
-        (adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073768});
-    </script>
-    <!-- JuicyAds END -->
-
     <!-- Close button -->
     <button class="close-btn" onclick="closeAd('rightAd')">&times;</button>
 </div>
@@ -315,19 +376,6 @@
         ad.style.display = 'none'; // Hides the ad
     }
 </script>
-
-
-        <div id="input-container">
-            <textarea type="text" id="user-input" placeholder="Type your message here..." rows="5" style="width: 75%;"></textarea>
-            <button id="send-button" onclick="sendMessage()">Send</button>
-            <button onclick="regenerateMessage()">Regenerate Message</button>
-        </div>
-        
-        <label for="enter-send" class="send-on-enter-label">
-            <input type="checkbox" checked id="enter-send" onchange="toggleEnterKey()" class="send-on-enter-checkbox">
-            <span class="checkbox-text">Send on Enter</span>
-        </label>
-        
         <script>
         // Function to handle Enter key behavior
         let sendOnEnter = true;
@@ -347,12 +395,6 @@
         // Function to simulate sending the message
         let sendButtonDisabled = false;
         </script>
- 
-        <!-- JuicyAds v3.0 -->
-        <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
-        <ins id="1073767" data-width="300" data-height="250"></ins>
-        <script type="text/javascript" data-cfasync="false" async>(adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1073767});</script>
-        <!--JuicyAds END-->
 
             <div class="status">
                 <p>Number of jobs in queue: <span id="queue-count" class="queue">0</span></p>
@@ -361,24 +403,8 @@
                 <div id="speed-indicator" class="speed-indicator"></div>
             </div>
             <div id="api-status">API Status: <span id="api-status-text" class="status-checking">Checking...</span></div>
-       
-            <!-- New button for 13B model page -->
-            <p>The following are not always active, reach TigerT2173 if you'd like to try!</p>
-            <button id="model13B-button" onclick="goToModel13B()">[Alpha] Try Our 13B Model (may be slower)</button>
-            <button id="model3B-button" onclick="goToModel3B()">[Alpha] Try Our 3B Model</button>
-            <button id="TTS-button" onclick="goToTTS()">[Alpha] Try Our Text to Speech.</button>
 
-            <script>
-                function goToModel13B() {
-                    window.location.href = '13B-model-page.html'; // replace with the actual URL for the 13B model page
-                }
-                function goToModel3B() {
-                    window.location.href = '3B-model-page.html'; // replace with the actual URL for the 13B model page
-                }
-                function goToTTS() {
-                    window.location.href = 'chatbeta.html'; // replace with the actual URL for the 13B model page
-                }
-            </script>
+            <button id="toggle-width"><i>Toggle to fix display issues on some mobile devices!</i></button>
 
             <button id="save-button">Save Chat</button>
 
@@ -404,65 +430,54 @@
                 <label for="user-name">Your Name: </label>
                 <input type="text" id="user-name" placeholder="replaces {{user}} with your name." oninput="usernameupdated()">
             </div>
-            <div class="setting">
+            <!-- <div class="setting">
                 <label for="SettingsMaxTokensSlider">Max Generated Tokens (Message Length):</label>
                 <input type="range" id="SettingsMaxTokensSlider" min="64" max="512" step="16" value="256">
                 <span id="SettingsMaxTokensValue">256 Tokens</span>
+            </div> -->
+
+            <div class="setting">
+                <label for="SettingsMaxSentencesSlider">Max Generated Sentences (Soft Message Length):</label>
+                <input type="range" id="SettingsMaxSentencesSlider" min="3" max="40" step="1" value="20">
+                <span id="SettingsMaxSentencesValue">20 Sentences</span>
             </div>
+                 
 
     <!-- Negative Prompt dropdown menu -->
     <select id="negativePrompt">
-        <option id="optionV3">Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
-        <option id="optionV2">Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
+        <option id="optionV5" selected>Negative Prompt V6 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
         <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
-        <option id="optionV4" selected>[Beta] Negative Prompt V4 (Added Sensory, and Helps Prevent Sentence Cut-Offs & Repetition)</option>
-        <option id="speakerIdentifierOption">Speaker Identifier Request (Write each sentence with a speaker identifier)</option>
-
     </select>
 
     <script>
-    const tokenSlider = document.getElementById("SettingsMaxTokensSlider");
-    const tokenDisplay = document.getElementById("SettingsMaxTokensValue");
-    const negativePrompt = document.getElementById("negativePrompt");
-    const optionV4 = document.getElementById("optionV4");
-    const optionV3 = document.getElementById("optionV3");
-    const optionV2 = document.getElementById("optionV2");
-    const speakerIdentifierOption = document.getElementById("speakerIdentifierOption");
+    //const tokenSlider = document.getElementById("SettingsMaxTokensSlider");
+    const sentenceSlider = document.getElementById("SettingsMaxSentencesSlider");
+
+    //const tokenDisplay = document.getElementById("SettingsMaxTokensValue");
+    const sentenceDisplay = document.getElementById("SettingsMaxSentencesValue");
+
+    const optionV5 = document.getElementById("optionV5");
 
     // Function to update the options' values and text
-    function updateNegativePromptOptions(maxTokens) {
-        optionV3.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.`;
-        optionV3.textContent = `Negative Prompt V3 (Token Limit: ${maxTokens})`;
-
-        optionV2.value = `Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.`;
-        optionV2.textContent = `Negative Prompt V2 (Token Limit: ${maxTokens})`;
-   
-        optionV4.value = `Do not discuss sexual or explicit content. Provide descriptive and sensory-rich responses (e.g., smells, textures, and visuals) as needed, while keeping the response focused and concise. Ensure the response does not exceed ${maxTokens} tokens and ends naturally without being cut off. Never repeat the last generation.`;
-        optionV4.textContent = `Negative Prompt V4 (Token Limit: ${maxTokens})`;
-
-        // Add the speaker identifier prompt to the dropdown
-        speakerIdentifierOption.value = "Please write the response with each sentence clearly labeled with a speaker identifier, like this: Speaker 1: [sentence] Speaker 2: [sentence]... Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.";
-        speakerIdentifierOption.textContent = `Speaker Identifier Request (Write each sentence with a speaker identifier)`;
-
+    function updateNegativePromptOptionsSentences(maxSentences) {
+        optionV5.value = `You are a highly rule-abiding assistant. Always adhere to these rules: 
+  1. Responses must never exceed ${maxSentences} sentences. Fewer is acceptable.
+  2. If you are close to the limit, end your response naturally.
+  3. Do not repeat or expand unnecessarily. 
+  4. Failure to comply is unacceptable.`;
+        optionV5.textContent = `Negative Prompt V5 (Sentence Limit: ${maxSentences})`;
     }
-
-    // Initial set-up
-    updateNegativePromptOptions(tokenSlider.value - 48);
     
-    // Event listener for the slider
-    tokenSlider.addEventListener("input", () => {
-        const maxTokens = tokenSlider.value - 48;
-        tokenDisplay.textContent = `${maxTokens} Tokens`;
-        updateNegativePromptOptions(maxTokens);
+    updateNegativePromptOptionsSentences(sentenceSlider.value);
+
+    sentenceSlider.addEventListener("input", () => {
+        const maxSentences = sentenceSlider.value;
+        sentenceDisplay.textContent = `${maxSentences} Sentences`;
+        updateNegativePromptOptionsSentences(maxSentences);
+
     });
     </script>
-                <!-- <label for="negativePrompt">Negative Prompt:</label>
-            <select id="negativePrompt">
-                <option value=`Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs. Never repeat the last generation.`>[Beta] Negative Prompt V3 (Helps Prevent Sentence Cut-Offs & Repetition)</option>
-                <option value=`Do not talk about sexual topics or explicit content. Ensure the response does not exceed ${maxTokens} tokens. If the response is close to the token limit, end naturally without abrupt cut-offs.`>[Beta] Negative Prompt V2 (Helps Prevent Sentence Cut-Offs)</option>
-                <option value="Do not talk about sexual topics or explicit content.">Negative Prompt V1</option>
-            </select> -->
-
+            
             <label for="systemPrompt">System Prompt:</label>
             <select id="systemPrompt">
                 <option value="Write {{char}}'s next response in a fictional role-play between {{char}} and {{user}}...">Roleplay v2</option>
@@ -489,10 +504,6 @@
             <br>
             <label for="systemParameters">Parameters:</label>
             <select id="systemParameters">
-                <option value="Ethereal Winds">𝐄𝐭𝐡𝐞𝐫𝐞𝐚𝐥 𝐖𝐢𝐧𝐝𝐬 - 𝘈 𝘴𝘰𝘧𝘵 𝘣𝘳𝘦𝘦𝘻𝘦 𝘵𝘩𝘢𝘵 𝘯𝘶𝘳𝘵𝘶𝘳𝘦𝘴 𝘤𝘳𝘦𝘢𝘵𝘪𝘷𝘪𝘵𝘺, 𝘪𝘥𝘦𝘢𝘭 𝘧𝘰𝘳 𝘴𝘦𝘳𝘦𝘯𝘦 𝘴𝘵𝘰𝘳𝘺𝘵𝘦𝘭𝘭𝘪𝘯𝘨</option>
-                <option value="AetherFume">𝐀𝐞𝐭𝐡𝐞𝐫𝐅𝐮𝐦𝐞 - 𝘈𝘯 𝘪𝘯𝘷𝘪𝘨𝘰𝘳𝘢𝘵𝘪𝘯𝘨 𝘧𝘰𝘳𝘤𝘦 𝘵𝘩𝘢𝘵 𝘱𝘳𝘰𝘱𝘦𝘭𝘴 𝘴𝘵𝘰𝘳𝘺𝘵𝘦𝘭𝘭𝘪𝘯𝘨 𝘧𝘰𝘳𝘸𝘢𝘳𝘥, 𝘪𝘯𝘷𝘪𝘵𝘪𝘯𝘨 𝘯𝘦𝘸 𝘪𝘥𝘦𝘢𝘴 𝘢𝘯𝘥 𝘢𝘥𝘷𝘦𝘯𝘵𝘶𝘳𝘦𝘴</option>
-                <option value="Nebula Drift">𝐍𝐞𝐛𝐮𝐥𝐚 𝐃𝐫𝐢𝐟𝐭 - 𝘌𝘮𝘣𝘳𝘢𝘤𝘦 𝘵𝘩𝘦 𝘦𝘵𝘩𝘦𝘳 𝘰𝘧 𝘯𝘦𝘣𝘶𝘭𝘢𝘳 𝘨𝘢𝘴𝘦𝘴, 𝘶𝘯𝘭𝘦𝘢𝘴𝘩 𝘷𝘢𝘳𝘪𝘦𝘥 𝘢𝘯𝘥 𝘤𝘳𝘦𝘢𝘵𝘪𝘷𝘦 𝘢𝘯𝘴𝘸𝘦𝘳𝘴 𝘧𝘳𝘰𝘮 𝘥𝘦𝘦𝘱 𝘴𝘱𝘢𝘤𝘦</option>
-                <option value="Chaos Catalyst">𝐂𝐡𝐚𝐨𝐬 𝐂𝐚𝐭𝐚𝐥𝐲𝐬𝐭 - 𝘈 𝘧𝘰𝘳𝘤𝘦𝘧𝘶𝘭 𝘥𝘪𝘴𝘳𝘶𝘱𝘵𝘪𝘰𝘯 𝘮𝘰𝘥𝘦 𝘵𝘰 𝘣𝘳𝘦𝘢𝘬 𝘤𝘺𝘤𝘭𝘦𝘴 𝘰𝘧 𝘳𝘦𝘱𝘦𝘵𝘪𝘵𝘪𝘷𝘦 𝘭𝘰𝘰𝘱𝘴, 𝘧𝘰𝘳𝘤𝘪𝘯𝘨 𝘷𝘢𝘳𝘪𝘦𝘥 𝘢𝘯𝘥 𝘶𝘯𝘦𝘹𝘱𝘦𝘤𝘵𝘦𝘥 𝘰𝘶𝘵𝘱𝘶𝘵.</option>
                 <option value="Llama 3 Default">Llama 3 Default</option>
                 <option value="Creative Boost">Creative Boost</option>
                 <option value="Yodayo Default">Yodayo Default</option>
@@ -515,7 +526,7 @@
             <br>
             <br>
             <label for="use-example-dialogue">
-                <input type="checkbox" id="use-example-dialogue" onchange="toggleExampleDialogue()" checked> Use Example Dialogue (Beta)
+                <input type="checkbox" id="use-example-dialogue" onchange="toggleExampleDialogue()"> Use Example Dialogue (Beta)
             </label>            
             <div class="setting hidden">
                 <label for="persona">Character Persona</label>
@@ -540,11 +551,117 @@
  
                 <div class="setting">
                     <label for="model">Select Model</label>
-                    <select id="model" onmouseover="showTooltip(event)" onmouseout="hideTooltip(event)">
-                        <option value="nethraliq" data-description="BotBridgeAI original model trained from LLAMA 7B and Nephra 8B">NethralIQ 8B</option>
-                        <option value="aetherius" data-description="Planned for development, it promises unique and engaging interactions">Aetherius 13B (this model is conceptual and does not exist yet)</option>
-                        <!-- Other options will be populated here -->
+                    <select id="model" onchange="handleModelChange()" onmouseover="showTooltip(event)" onmouseout="hideTooltip(event)">
+                        <option value="NethralIQ" data-description="BotBridge original model trained from LLAMA 7B and Nephra 8B" data-bgcolor="#1e272e">NethralIQ 8B</option>
+                        <option value="NemoMix" data-description="A powerful, premium AI model designed for high-level performance and advanced interactions. Currently in development, it promises enhanced capabilities and a more dynamic user experience." data-bgcolor="#0a1f15">NemoMix 12B</option>
                     </select>
+                    <div id="tooltip"></div>
+                
+                    <script>
+                        let subscriptionTier = 0; // Default to 0 if no token or tier is found
+                    
+                        // Function to decode JWT and get the Subscription Tier
+                        function getUserSubscriptionTier(token) {
+                            if (!token) return null; // If there's no token, return null
+                    
+                            try {
+                                // Decode the JWT (assuming it's a standard JWT with 3 parts)
+                                const payload = token.split('.')[1]; // Get the payload part
+                                const decodedPayload = JSON.parse(atob(payload)); // Decode base64 URL and parse as JSON
+                    
+                                console.log(decodedPayload); // Log the decoded payload to check the structure
+                    
+                                // Check for 'SubscriptionTier' and return its value
+                                if (decodedPayload && decodedPayload['SubscriptionTier'] !== undefined) {
+                                    return decodedPayload['SubscriptionTier']; // Return the SubscriptionTier value
+                                } else {
+                                    return null; // Return null if 'SubscriptionTier' is not present
+                                }
+                            } catch (error) {
+                                console.error("Invalid token:", error);
+                                return null; // Return null if decoding fails
+                            }
+                        }
+                    
+                        // Function to handle model changes
+                        function handleModelChange() {
+                            const select = document.getElementById("model");
+                            const selectedOption = select.options[select.selectedIndex];
+                            const model = selectedOption.value;
+                            const bgColor = selectedOption.getAttribute("data-bgcolor");
+                    
+                            // Check for user token
+                            const userToken = localStorage.getItem('token'); // Replace with your method of obtaining the token
+                            console.log(userToken);
+                            subscriptionTier = getUserSubscriptionTier(userToken);
+                            console.log(subscriptionTier);
+                    
+                            // Force "NethralIQ" if the user is not premium
+                            if (subscriptionTier < 1) {
+                                // Automatically select "Gastronova" if not premium
+                                select.value = "NethralIQ"; // Set the model selection to "NethralIQ"
+                                alert("You are not a premium user. Access to this model is restricted.");
+                                return; // Prevent further actions if not premium
+                            }
+                    
+                            // Change background color
+                            document.body.style.backgroundColor = bgColor;
+                    
+                            // Store selected model and background color in localStorage
+                            localStorage.setItem('selectedModel', model);
+                            localStorage.setItem('backgroundColor', bgColor);
+                    
+                            // Update API send command
+                            let apiCommand;
+                            if (model === "NethralIQ") {
+                                apiCommand = "sendToNethralIQAPI";
+                            } else if (model === "NemoMix") {
+                                apiCommand = "sendToNemoMixAPI";
+                            }
+                            console.log(`Using API command: ${apiCommand}`);
+                        }
+                    
+                        document.addEventListener('DOMContentLoaded', function() {
+                        console.log("Window loaded, checking subscription tier & selected model...");
+                        const userToken = localStorage.getItem('token'); // Get the token on page load
+                        console.log("User token:", userToken);
+
+                        if (!userToken) {
+                            console.log("No token found.");
+                            return; // Exit if no token is found
+                        }
+
+                        // Retrieve the subscription tier
+                        subscriptionTier = getUserSubscriptionTier(userToken);
+                        console.log("User subscription tier:", subscriptionTier);
+
+                        // Force "NethralIQ" if the user is not premium
+                        const select = document.getElementById("model");
+                        if (subscriptionTier < 1) {
+                            console.log("User is not premium, forcing 'NethralIQ' selection.");
+                            select.value = "NethralIQ"; // Force "NethralIQ"
+                            alert("You are not a premium user. Access to this model is restricted.");
+                        } else {
+                            // Retrieve stored model and background color if available
+                            const storedModel = localStorage.getItem('selectedModel');
+                            const storedBgColor = localStorage.getItem('backgroundColor');
+
+                            if (storedModel) {
+                                select.value = storedModel; // Restore previously selected model
+                                const selectedOption = select.options[select.selectedIndex];
+                                const bgColor = selectedOption.getAttribute("data-bgcolor");
+                                document.body.style.backgroundColor = bgColor; // Restore background color
+                            } else {
+                                // If no model stored, set a default model and background color
+                                select.value = "NethralIQ"; // Default to "NethralIQ"
+                                const defaultBgColor = "#1e272e"; // Default background color
+                                document.body.style.backgroundColor = defaultBgColor; // Apply default background color
+                            }
+                        }
+                    });
+
+                    </script>
+                    
                     <div id="tooltip" class="tooltip"></div>
                 </div>
             <div class="setting">
@@ -583,7 +700,7 @@
                   
             <div class="setting">
                 <label for="repeat_penalty">Repeat Penalty</label>
-                <input type="number" id="repeat_penalty" min="0.0" max="2" step="0.01" value="1.09">
+                <input type="number" id="repeat_penalty" min="0.0" max="2" step="0.01" value="1.15">
             </div>
 
             <div class="setting">
@@ -605,6 +722,7 @@
         localStorage.setItem('prescence_penalty', document.getElementById('prescence_penalty').value);
         localStorage.setItem('frequency_penalty', document.getElementById('frequency_penalty').value);
         localStorage.setItem('repeat_penalty', document.getElementById('repeat_penalty').value);
+        localStorage.setItem('repeat_last_n', document.getElementById('repeat_last_n').value);
         alert('Settings saved');
     }
 
@@ -617,6 +735,9 @@
         document.getElementById('prescence_penalty').value = localStorage.getItem('prescence_penalty');
         document.getElementById('frequency_penalty').value = localStorage.getItem('frequency_penalty');
         document.getElementById('repeat_penalty').value = localStorage.getItem('repeat_penalty');
+        document.getElementById('repeat_last_n').value = localStorage.getItem('repeat_last_n');
+        repeat_last_n_display.textContent = `${repeat_last_n_slider.value} Tokens`;
+
         alert('Settings loaded');
     }
 
@@ -637,29 +758,34 @@
         <!-- Expert Settings Section -->
         <div id="expert-settings">
             <h3>Expert Settings</h3>   
-            <label for="appendNegativePrompt">
-                Append Negative Prompt (Makes it more aggressive)
-            </label>
-            <input type="checkbox" id="appendNegativePrompt"> 
-            <br>        
             <button id="toggleSettings">Toggle Character Information</button>
             <!-- Expert settings go here -->
 
-        
-        
-            <label for="ESettingslastNUMsentencesSlider">How many sentences to use from most recent context:</label>
-            <input type="range" id="ESettingslastNUMsentencesSlider" min="1" max="500" step="1" value="50">
-            <span id="ESettingslastNUMsentencesValue">Last 50 Sentences</span>
-            chat
-            <label for="ESettingsRandomNUMsentencesSlider">Number of Random Sentences to select from context:</label>
-            <input type="range" id="ESettingsRandomNUMsentencesSlider" min="1" max="500" step="1" value="200">
-            <span id="ESettingsRandomNUMsentencesValue">Select 200 Random Sentences</span>
-            <br><i>Older Content has a lower and lower chance of being selected</i>
-            <label for="setting2">Expert Setting 2:</label>
-            <input type="text" id="setting2"><br><br>
-
-            <label for="setting3">Expert Setting 3:</label>
-            <input type="text" id="setting3"><br><br>
+            <label for="appendNegativePrompt">
+                Append Negative Prompt (Makes Sentence Limit A Bit More Strict, preventing cut-offs)
+            </label>
+            <input type="checkbox" id="appendNegativePrompt"> 
+            
+            <br>
+           
+            <label for="repeat_last_n">Last # of tokens to consider for applying Repeat Penalty</label>
+            <input type="range" id="repeat_last_n" min="64" max="8192" step="16">
+            <span id="repeat_last_n_display">2048 Tokens</span>
+            
+            <script>
+                const repeat_last_n_slider = document.getElementById("repeat_last_n");
+                const repeat_last_n_display = document.getElementById("repeat_last_n_display");
+            
+                // Set default value on page load
+                repeat_last_n_slider.value = 2048;
+                repeat_last_n_display.textContent = `2048 Tokens`;
+            
+                // Update the display on slider input
+                repeat_last_n_slider.addEventListener("input", () => {
+                    repeat_last_n_display.textContent = `${repeat_last_n_slider.value} Tokens`;
+                });
+            </script>
+       
         </div>
     </div>
 
@@ -922,7 +1048,7 @@ function hideTooltip() {
 
 </script>
 <script>
-    const socket = new WebSocket('wss://botbridge.net'); // Update with your domain
+    const socket = new WebSocket('wss://hub.botbridge.net'); // Update with your domain
 
     // Connection opened
     socket.addEventListener('open', (event) => {
@@ -945,9 +1071,20 @@ function hideTooltip() {
     });
     
 </script>
+<script>
+    const toggleButton = document.getElementById('toggle-width');
+    const settingsFixMobileContainer = document.getElementById('settings-container');
+    const chatFixMobileContainer = document.getElementById('chat-container');
+
+    toggleButton.addEventListener('click', () => {
+    console.log("Trying to fix view on mobile...")
+      settingsFixMobileContainer.classList.toggle('mobile-issue');
+      chatFixMobileContainer.classList.toggle('mobile-issue');
+    });
+  </script>
 
 <script src="js/scripts/chat/savechatlocally.js?v=1"></script>
-<script src="js/chat.js"></script>
+<script src="js/chat2.0.js"></script>
 <script src="js/scripts/checkbot.js"></script>
 <script src="js/menu.js" defer></script>
 </body>
