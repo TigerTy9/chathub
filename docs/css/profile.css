@@ -18,8 +18,8 @@ body {
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
-    position: relative; /* For absolute positioning of effect clouds */
-    z-index: 1; /* Keep container content above effect clouds */
+    position: relative; /* For absolute positioning of fart clouds */
+    z-index: 1; /* Keep container content above fart clouds */
 }
 
 .profile-header {
@@ -29,13 +29,6 @@ body {
     padding-bottom: 20px; /* Space below profile header */
 }
 
-.profile-pic {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    margin-right: 20px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Shadow effect */
-}
 
 .profile-info {
     flex: 1;
@@ -45,53 +38,7 @@ body {
     margin: 10px 0;
 }
 
-.badge {
-    background-color: #00b300; 
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 20px; /* Pill shape */
-    margin-right: 5px;
-    display: inline-block;
-    position: relative; /* For animation */
-    overflow: hidden; /* To contain the particles */
-    animation: glow 1.5s infinite alternate; /* Glow effect */
-}
 
-@keyframes glow {
-    0% {
-        text-shadow: 0 0 5px #00b300, 0 0 10px #00b300, 0 0 15px #00b300;
-        box-shadow: 0 0 5px #00b300, 0 0 10px #00b300, 0 0 15px #00b300;
-    }
-    100% {
-        text-shadow: 0 0 10px #00b300, 0 0 20px #00b300, 0 0 30px #00b300;
-        box-shadow: 0 0 10px #00b300, 0 0 20px #00b300, 0 0 30px #00b300;
-    }
-}
-
-.badge::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 150%;
-    height: 150%;
-    border-radius: 50%;
-    background: rgba(0, 179, 0, 0.5); /* Particle effect color */
-    transform: translate(-50%, -50%);
-    animation: particles 1.5s infinite;
-    z-index: -1; /* Send particles behind badge */
-}
-
-@keyframes particles {
-    0% {
-        transform: scale(1);
-        opacity: 0.8;
-    }
-    100% {
-        transform: scale(1.5);
-        opacity: 0;
-    }
-}
 
 .bio-section, .social-section {
     margin-top: 10px;
@@ -105,20 +52,70 @@ body {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
+/* General Columns Layout */
 .columns {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Arrange columns side by side */
+    gap: 20px;                     /* Add space between columns */
     margin-top: 20px;
 }
 
-.chatbots-column,
-.stories-column {
-    width: 48%;
+/* For each column */
+.column {
+    width: 48%;  /* Ensure both columns take nearly half of the width */
     padding: 10px;
+}
+
+/* Chatbots Column */
+.chatbots-column {
     background-color: #2a2a2a; 
     border-radius: 8px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    padding: 10px;
 }
+
+/* Stories Column */
+.stories-column {
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+}
+
+/* Sidebar Card in Stories */
+.sidebar-card {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.sidebar-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+/* Header Style for Chatbots and Stories */
+h2 {
+    margin-bottom: 15px;  /* Space below the header */
+    font-size: 1.5rem;    /* Adjust size for the header */
+    color: #00b300;       /* Green color to match theme */
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+    .columns {
+        flex-direction: column; /* Stack columns vertically on small screens */
+        align-items: stretch;   /* Make the columns take full width */
+    }
+
+    .column {
+        width: 100%;  /* Both columns will take full width */
+        margin-bottom: 20px;  /* Add space between them */
+    }
+}
+
 
 .sidebar-card {
     background-color: #3a3a3a; 
@@ -174,4 +171,27 @@ body {
         transform: translateY(0); 
         opacity: 0.6; 
     }
+}
+
+/* Profile Image Container */
+.profile-image-container {
+    width: 150px;                /* Container size */
+    height: 150px;               /* Container size */
+    border-radius: 50%;          /* Makes the container round */
+    overflow: hidden;            /* Hide anything that goes outside the circle */
+    display: flex;               /* Use flexbox to center the image */
+    justify-content: center;     /* Horizontally center the image */
+    align-items: center;         /* Vertically center the image */
+    border: 2px solid #000;      /* Optional: Border around the image */
+    margin-right: 15px;
+}
+
+/* Profile Picture */
+.profile-pic {
+    width: 100%;                 /* Ensure the image fills the width of the container */
+    height: 100%;                /* Ensure the image fills the height of the container */
+    object-fit: contain;         /* Ensures the image fits inside the container, scaling up or down */
+    object-position: center;     /* Centers the image */
+    min-width: 100%;             /* Ensures small images are scaled up */
+    min-height: 100%;            /* Ensures small images are scaled up */
 }
