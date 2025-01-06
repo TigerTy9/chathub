@@ -712,17 +712,17 @@ function loadFormData() {
             const guidedScenario = document.getElementById('guidedScenario');
 
             if (scenarioContainer.style.display === 'none') {
-                scenarioContainer.style.display = 'block';
-                contextContainer.style.display = 'none';
-                toggleButton.textContent = 'Switch to Context Mode';
-                generalContext.style.display = 'none';
-                guidedScenario.style.display = 'block';
-            } else {
                 scenarioContainer.style.display = 'none';
                 contextContainer.style.display = 'block';
                 toggleButton.textContent = 'Switch to Scenario Mode (Unavalible)';
                 generalContext.style.display = 'block';
                 guidedScenario.style.display = 'none';
+            } else {
+                scenarioContainer.style.display = 'block';
+                contextContainer.style.display = 'none';
+                toggleButton.textContent = 'Switch to Context Mode';
+                generalContext.style.display = 'none';
+                guidedScenario.style.display = 'block';
             }
         });
 
