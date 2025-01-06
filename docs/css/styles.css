@@ -252,7 +252,7 @@ main {
     display: block;          /* Show overlay on hover */
 }
 
-.creator a {
+.creator {
     color: #00d8ff;            /* Softer color for creator */
     margin-top: auto;       /* Push creator to the bottom */
     font-size: 0.9em;       /* Smaller font size */
