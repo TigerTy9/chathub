@@ -255,13 +255,13 @@ main {
 .creator {
     color: #00d8ff;            /* Softer color for creator */
     margin-top: auto;       /* Push creator to the bottom */
-    font-size: 2.5em;       /* Smaller font size */
+    font-size: 1.5em;       /* Smaller font size */
 }
 
 .creator a {
     color: #87b9c2;            /* Softer color for creator */
     margin-top: auto;       /* Push creator to the bottom */
-    font-size: 2.5em;       /* Smaller font size */
+    font-size: 1.5em;       /* Smaller font size */
 }
 .view-btn {
     background-color: #FFA500; /* Bright orange background for button */
