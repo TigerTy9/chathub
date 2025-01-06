@@ -1,5 +1,5 @@
 {
-    "maintenanceMode": false,
+    "maintenanceMode": true,
     "maintenanceUpcoming": false,
     "maintenanceMessage": "We are currently developing this part of the site!"
 }
