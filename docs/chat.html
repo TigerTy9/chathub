@@ -598,7 +598,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     
                             // Force "NethralIQ" if the user is not premium
                             if (subscriptionTier < 1) {
-                                // Automatically select "Gastronova" if not premium
+                                // Automatically select "NethralIQ" if not premium
                                 select.value = "NethralIQ"; // Set the model selection to "NethralIQ"
                                 alert("You are not a premium user. Access to this model is restricted.");
                                 return; // Prevent further actions if not premium
@@ -637,7 +637,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                         // Force "NethralIQ" if the user is not premium
                         const select = document.getElementById("model");
-                        if (subscriptionTier < 1) {
+                        if (subscriptionTier < 1 && select.value == "NemoMix") {
                             console.log("User is not premium, forcing 'NethralIQ' selection.");
                             select.value = "NethralIQ"; // Force "NethralIQ"
                             alert("You are not a premium user. Access to this model is restricted.");
