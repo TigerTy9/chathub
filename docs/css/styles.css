@@ -215,6 +215,7 @@ main {
     border-radius: 5px; /* Rounded corners */
     padding: 3px 6px; /* Reduced padding for smaller tags */
     margin: 2px; /* Margin between tags */
+    color: white;
     font-size: 12px; /* Smaller font size */
     display: inline-block; /* Inline block for proper layout */
 }
