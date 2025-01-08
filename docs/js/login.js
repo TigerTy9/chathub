@@ -37,14 +37,14 @@ function loginUser() {
         const redirectUrl = document.referrer || "https://dev.botbridge.net/";
         console.log('Redirecting to:', redirectUrl); // Log the redirect URL
         
-        if (redirectUrl == "https://botbridge.net/chat.html") {
+        if (redirectUrl == "https://dev.botbridge.net/chat.html") {
             window.opener.postMessage({ type: 'login', token: data.token }, window.location.origin); // Send token to the opener
             window.opener.location.href = redirectUrl; // Change the opener's location
             
             // Redirect to the referrer or homepage
             window.close(); // Optionally close the login window
         } else {
-            window.location.href = 'https://botbridge.net/index.html';
+            window.location.href = 'https://dev.botbridge.net/index.html';
         }
         //const redirectUrl = document.referrer || '../index.html';
 
