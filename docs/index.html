@@ -179,8 +179,8 @@
 function detectAdBlocker() {
     // Create a script element
     var script = document.createElement('script');
-    script.src = 'https://a.magsrv.com/ad-provider.js'; // Use the URL of the ad-serving script
-    
+    script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9512443307734909'; // Use the URL of the ad-serving script
+
     // Event listener for when the script loads successfully
     script.onload = function() {
         // If the script loads, no ad blocker is detected
@@ -416,7 +416,9 @@ function detectAdBlocker() {
     <!-- Scripts -->
     <script src="js/hub.js"></script>
     <script src="js/menu.js"></script>
-
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9512443307734909"
+    crossorigin="anonymous"></script>
+    
     <script>
         const socket = new WebSocket('wss://botbridge.net'); // Update with your domain
     
