@@ -22,7 +22,7 @@ document.getElementById('fetchImageForm').addEventListener('submit', async (e) =
 
     try {
         // Construct direct link to the image
-        const url = `https://efroai.net/bucket/${userId}/${charId}/${encodeURIComponent(objectKey)}`;
+        const url = `https://dev.botbridge.net/bucket/${userId}/${charId}/${encodeURIComponent(objectKey)}`;
 
         // Get the selected image position (background, left, right)
         const imagePosition = document.querySelector('input[name="imagePosition"]:checked').value;
@@ -255,7 +255,7 @@ document.getElementById('prevImageBtn').addEventListener('click', async () => {
         attempts++;
 
         // Skip the current slot if it's unavailable (returns 404) and remember the unavailable slots
-        while (unavailableSlots.has(currentSlot) || !(await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`))) {
+        while (unavailableSlots.has(currentSlot) || !(await isImageValid(`https://hub.botbridge.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentSlot}.webp`))) {
             unavailableSlots.add(currentSlot); // Mark the slot as unavailable
             currentSlot = currentSlot > 1 ? currentSlot - 1 : (isSFW ? 3 : 10); // Continue looping back to the previous slot
             attempts++;
@@ -334,7 +334,7 @@ document.addEventListener('click', (event) => {
             while (!validSlotFound) {
                 // Check if the clicked slot is available and valid
                 if (!unavailableSlots.has(currentCheckedSlot)) {
-                    const isValid = await isImageValid(`https://efroai.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentCheckedSlot}.webp`);
+                    const isValid = await isImageValid(`https://hub.botbridge.net/bucket/${sessionStorage.getItem('characterUploader')}/${sessionStorage.getItem('selectedCharacterId')}/slot${currentCheckedSlot}.webp`);
                     if (isValid) {
                         validSlotFound = true; // A valid slot was found, break the loop
                     } else {
