@@ -135,7 +135,7 @@ app.post('/upload-chat', async (req, res) => {
 
     // Prepare S3 upload parameters
     const params = {
-        Bucket: 'efai-savedchats', // Your S3 bucket name
+        Bucket: '-savedchats', // Your S3 bucket name
         Key: `chats/${userId}/${timestamp}-${characterName}.json`, // Folder structure for each user
         Body: chatFileContent,
         ContentType: 'application/json',
