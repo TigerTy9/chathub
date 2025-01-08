@@ -206,12 +206,6 @@ const cleanupInactiveUsers = () => {
     }
 };
 
-const https = require('https');
-const fs = require('fs');
-const path = require('path');
-const express = require('express');
-
-const app = express();
 
 // Read your SSL certificate and private key
 const defaultOptions = {
