@@ -204,7 +204,6 @@ function displayCharacters(characters, searchQuery) {
             //         const adContainer = document.createElement('div');
             //         adContainer.className = 'ad-container';
         
-            //         // Create a div for JuicyAds to render the ad into (ID should be dynamically generated)
             //         const adDiv = document.createElement('ins');
                  
             //         // Append the div to the ad container
