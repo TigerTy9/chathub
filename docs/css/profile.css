@@ -18,8 +18,8 @@ body {
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
-    position: relative; /* For absolute positioning of fart clouds */
-    z-index: 1; /* Keep container content above fart clouds */
+    position: relative; /* For absolute positioning of clouds */
+    z-index: 1; /* Keep container content above clouds */
 }
 
 .profile-header {
