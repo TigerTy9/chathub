@@ -206,37 +206,15 @@ const cleanupInactiveUsers = () => {
     }
 };
 
-
 // Read your SSL certificate and private key
-const defaultOptions = {
-    key: fs.readFileSync(path.resolve('certs/private.key.pem')),
-    cert: fs.readFileSync(path.resolve('certs/domain.cert.pem')),
+const options = {
+    key: fs.readFileSync('certs/private2.key.pem'),
+    cert: fs.readFileSync('certs/domain2.cert.pem'),
 };
 
-// Additional certificates for specific hostnames
-const sniOptions = {
-    'botbridge.net': {
-        key: fs.readFileSync(path.resolve('certs/private.key.pem')),
-        cert: fs.readFileSync(path.resolve('certs/domain.cert.pem')),
-    },
-    'botbridgeai.com': {
-        key: fs.readFileSync(path.resolve('certs/private2.key.pem')),
-        cert: fs.readFileSync(path.resolve('certs/domain2.cert.pem')),
-    },
-};
-
-// Create the HTTPS server
-const server = https.createServer((req, res) => {
-    const hostname = req.headers.host;
-    const sniConfig = sniOptions[hostname];
-    if (sniConfig) {
-        const { key, cert } = sniConfig;
-        req.connection.encryptionContext.key = key;
-        req.connection.encryptionContext.cert = cert;
-    }
-    app(req, res);
-}).listen(443, () => {
-    console.log('HTTPS Server running on port 443 with SNI');
+// Start the HTTPS server
+const server = https.createServer(options, app).listen(443, () => {
+    console.log('HTTPS Server running on port 443');
 });
 
 // Create a WebSocket server
