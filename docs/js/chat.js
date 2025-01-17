@@ -1751,7 +1751,7 @@ async function updateLikeButton() {
 }
 
 async function fetchCharacterLikes(characterId, characterUploader) {
-    const token = localStorage.getItem('token'); // Retrieve the token
+    const token = "testing"; // localStorage.getItem('token'); // Retrieve the token
     const userID = sessionStorage.getItem('userID'); // Get the current user's ID
 
     try {
